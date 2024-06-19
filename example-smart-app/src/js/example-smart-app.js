@@ -12,19 +12,26 @@
         var patient = smart.patient;
         var pt = patient.read();
         var obv = smart.patient.api.fetchAll({
-                    type: 'Observation',
-                    query: {
-                      code: {
-                        $or: ['http://loinc.org|8302-2', 'http://loinc.org|8462-4',
-                              'http://loinc.org|8480-6', 'http://loinc.org|2085-9',
-                              'http://loinc.org|2089-1', 'http://loinc.org|55284-4']
-                      }
-                    }
-                  });
+          type: 'Observation',
+          query: {
+            code: {
+              $or: ['http://loinc.org|8302-2', 'http://loinc.org|8462-4',
+                    'http://loinc.org|8480-6', 'http://loinc.org|2085-9',
+                    'http://loinc.org|2089-1', 'http://loinc.org|55284-4']
+            }
+          }
+        });
 
-        $.when(pt, obv).fail(onError);
+        var docRefs = smart.patient.api.fetchAll({
+          type: 'DocumentReference',
+          query: {
+            patient: patient.id
+          }
+        });
 
-        $.when(pt, obv).done(function(patient, obv) {
+        $.when(pt, obv, docRefs).fail(onError);
+
+        $.when(pt, obv, docRefs).done(function(patient, obv, docRefs) {
           var byCodes = smart.byCodes(obv, 'code');
           var gender = patient.gender;
 
@@ -60,7 +67,14 @@
           p.hdl = getQuantityValueAndUnit(hdl[0]);
           p.ldl = getQuantityValueAndUnit(ldl[0]);
 
-          ret.resolve(p);
+          var documents = docRefs.map(function(docRef) {
+            return {
+              id: docRef.id,
+              description: docRef.description || 'Unnamed Document'
+            };
+          });
+
+          ret.resolve({patient: p, documents: documents});
         });
       } else {
         onError();
@@ -69,7 +83,6 @@
 
     FHIR.oauth2.ready(onReady, onError);
     return ret.promise();
-
   };
 
   function defaultPatient(){
@@ -108,13 +121,14 @@
         typeof ob.valueQuantity != 'undefined' &&
         typeof ob.valueQuantity.value != 'undefined' &&
         typeof ob.valueQuantity.unit != 'undefined') {
-          return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
+      return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
     } else {
       return undefined;
     }
   }
 
-  window.drawVisualization = function(p) {
+  window.drawVisualization = function(data) {
+    var p = data.patient;
     $('#holder').show();
     $('#loading').hide();
     $('#fname').html(p.fname);
@@ -126,6 +140,12 @@
     $('#diastolicbp').html(p.diastolicbp);
     $('#ldl').html(p.ldl);
     $('#hdl').html(p.hdl);
-  };
 
+    var docRefs = data.documents;
+    var docRefsTableBody = $('#document-references');
+    docRefsTableBody.empty();
+    docRefs.forEach(function(doc) {
+      docRefsTableBody.append('<tr><td>' + doc.description + '</td></tr>');
+    });
+  };
 })(window);
