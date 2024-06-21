@@ -159,10 +159,19 @@
         'Accept': 'application/pdf'  // Adjust this based on the expected media type
       }
     })
-    .then(response => response.blob())
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
+    .then(response => response.json())
+    .then(data => {
+      var binaryUrl = data.content[0].attachment.url;
+      fetch(binaryUrl, {
+        headers: {
+          'Authorization': 'Bearer ' + token
+        }
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        window.open(url, '_blank');
+      });
     })
     .catch(error => console.error('Error fetching document:', error));
   };
