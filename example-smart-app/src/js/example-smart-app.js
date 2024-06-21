@@ -143,7 +143,7 @@
       p.docRef.forEach(function(doc) {
         var docUrl = doc.content[0].attachment.url;
         docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td>';
-        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + docUrl + '\')">Open</button></td></tr>';
+        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + docUrl + '\', \'' + smart.tokenResponse.access_token + '\')">Open</button></td></tr>';
       });
       docRefHtml += '</tbody></table>';
       $('#document-references').html(docRefHtml);
@@ -152,8 +152,19 @@
     }
   };
 
-  window.openDocument = function(url) {
-    window.open(url, '_blank');
+  window.openDocument = function(url, token) {
+    fetch(url, {
+      headers: {
+        'Authorization': 'Bearer ' + token,
+        'Accept': 'application/pdf'  // Adjust this based on the expected media type
+      }
+    })
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+    })
+    .catch(error => console.error('Error fetching document:', error));
   };
 
 })(window);
