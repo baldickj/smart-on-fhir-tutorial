@@ -19,7 +19,7 @@
             code: {
               $or: ['http://loinc.org|8302-2', 'http://loinc.org|8462-4',
                     'http://loinc.org|8480-6', 'http://loinc.org|2085-9',
-                    'http://loinc.org|2089-1' ]
+                    'http://loinc.org|2089-1']
             }
           }
         });
@@ -47,7 +47,7 @@
 
           var height = byCodes('8302-2');
           var systolicbp = getBloodPressureValue(byCodes('55284-4'), '8480-6');
-          var diastolicbp = getBloodPressureValue(byCodes('8462-4'), '8462-4');
+          var diastolicbp = getBloodPressureValue(byCodes('55284-4'), '8462-4');
           var hdl = byCodes('2085-9');
           var ldl = byCodes('2089-1');
 
@@ -139,16 +139,23 @@
     $('#hdl').html(p.hdl);
 
     if (p.docRef.length > 0) {
-      var docRefHtml = '<h2>Document References</h2><table><tr><th>Document Name</th></tr>';
+      var docRefHtml = '<h2>Document References</h2><table class="table"><thead><tr><th>Document Name</th><th>Action</th></tr></thead><tbody>';
       p.docRef.forEach(function(doc) {
-        docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td></tr>';
+        var docUrl = doc.content[0].attachment.url;
+        docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td>';
+        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + docUrl + '\')">Open</button></td></tr>';
       });
-      docRefHtml += '</table>';
-      $('#holder').append(docRefHtml);
+      docRefHtml += '</tbody></table>';
+      $('#document-references').html(docRefHtml);
     } else {
-      $('#holder').append('<h2>No Document References Found</h2>');
+      $('#document-references').html('<tr><td colspan="2">No Document References Found</td></tr>');
     }
   };
 
+  window.openDocument = function(url) {
+    window.open(url, '_blank');
+  };
+
 })(window);
+
 
