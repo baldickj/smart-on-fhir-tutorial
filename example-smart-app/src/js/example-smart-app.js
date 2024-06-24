@@ -142,8 +142,12 @@
       var docRefHtml = '<h2>Document References</h2><table class="table"><thead><tr><th>Document Name</th><th>Action</th></tr></thead><tbody>';
       p.docRef.forEach(function(doc) {
         var docId = doc.id;
+        var attachment = doc.content[0].attachment;
+        var contentType = attachment.contentType;
+        var url = attachment.url;
+        
         docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td>';
-        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + docId + '\', \'' + smart.tokenResponse.access_token + '\')">Open</button></td></tr>';
+        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + url + '\', \'' + contentType + '\', \'' + smart.tokenResponse.access_token + '\')">Open</button></td></tr>';
       });
       docRefHtml += '</tbody></table>';
       $('#document-references').html(docRefHtml);
@@ -152,12 +156,11 @@
     }
   };
 
-  window.openDocument = function(docId, token) {
-    var binaryUrl = '/Binary/' + docId;  // Construct the Binary resource URL
-    fetch(binaryUrl, {
+  window.openDocument = function(url, contentType, token) {
+    fetch(url, {
       headers: {
         'Authorization': 'Bearer ' + token,
-        'Accept': 'application/pdf'  // Adjust this based on the expected media type
+        'Accept': contentType  // Set Accept header based on the content type
       }
     })
     .then(response => response.blob())
