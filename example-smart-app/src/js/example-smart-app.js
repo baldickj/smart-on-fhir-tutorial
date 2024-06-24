@@ -12,6 +12,7 @@
         var patient = smart.patient;
         var pt = patient.read();
         var encounterId = smart.tokenResponse.encounter;
+        var accessToken = smart.tokenResponse.access_token;
 
         var obv = smart.patient.api.fetchAll({
           type: 'Observation',
@@ -28,6 +29,9 @@
           type: 'DocumentReference',
           query: {
             encounter: encounterId
+          },
+          headers: {
+            'Authorization': 'Bearer ' + accessToken
           }
         });
 
@@ -46,8 +50,8 @@
           }
 
           var height = byCodes('8302-2');
-          var systolicbp = getBloodPressureValue(byCodes('55284-4'), '8480-6');
-          var diastolicbp = getBloodPressureValue(byCodes('55284-4'), '8462-4');
+          var systolicbp = getBloodPressureValue(byCodes('8480-6'));
+          var diastolicbp = getBloodPressureValue(byCodes('8462-4'));
           var hdl = byCodes('2085-9');
           var ldl = byCodes('2089-1');
 
@@ -139,36 +143,39 @@
     $('#hdl').html(p.hdl);
 
     if (p.docRef.length > 0) {
-      var docRefHtml = '<h2>Document References</h2><table class="table"><thead><tr><th>Document Name</th><th>Action</th></tr></thead><tbody>';
+      var docRefHtml = '<h2>Document References</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
       p.docRef.forEach(function(doc) {
-        var docId = doc.id;
-        var attachment = doc.content[0].attachment;
-        var contentType = attachment.contentType;
-        var url = attachment.url;
-        
+        var docUrl = doc.content[0].attachment.url;
         docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td>';
-        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + url + '\', \'' + contentType + '\', \'' + smart.tokenResponse.access_token + '\')">Open</button></td></tr>';
+        docRefHtml += '<td><button onclick="openDocument(\'' + docUrl + '\')">Open</button></td></tr>';
       });
-      docRefHtml += '</tbody></table>';
+      docRefHtml += '</table>';
       $('#document-references').html(docRefHtml);
     } else {
-      $('#document-references').html('<tr><td colspan="2">No Document References Found</td></tr>');
+      $('#document-references').html('<h2>No Document References Found</h2>');
     }
   };
 
-  window.openDocument = function(url, contentType, token) {
-    fetch(url, {
-      headers: {
-        'Authorization': 'Bearer ' + token,
-        'Accept': contentType  // Set Accept header based on the content type
-      }
-    })
-    .then(response => response.blob())
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
-    })
-    .catch(error => console.error('Error fetching document:', error));
+  window.openDocument = function(url) {
+    FHIR.oauth2.ready(function(smart) {
+      var accessToken = smart.tokenResponse.access_token;
+      $.ajax({
+        url: url,
+        type: 'GET',
+        headers: {
+          'Authorization': 'Bearer ' + accessToken
+        },
+        success: function(response) {
+          // Create a blob URL and open it in a new tab
+          var blob = new Blob([response], { type: response.type });
+          var blobUrl = URL.createObjectURL(blob);
+          window.open(blobUrl, '_blank');
+        },
+        error: function() {
+          console.log('Failed to fetch document');
+        }
+      });
+    });
   };
 
 })(window);
