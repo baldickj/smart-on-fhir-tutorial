@@ -147,7 +147,7 @@
       p.docRef.forEach(function(doc) {
         var docUrl = doc.content[0].attachment.url;
         docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td>';
-        docRefHtml += '<td><button onclick="openDocument(\'' + docUrl + '\')">Open</button></td></tr>';
+        docRefHtml += '<td><button onclick="openDocument(\'' + docUrl + '\', \'' + doc.content[0].attachment.contentType + '\')">Open</button></td></tr>';
       });
       docRefHtml += '</table>';
       $('#document-references').html(docRefHtml);
@@ -156,18 +156,19 @@
     }
   };
 
-  window.openDocument = function(url) {
+  window.openDocument = function(url, contentType) {
     FHIR.oauth2.ready(function(smart) {
       var accessToken = smart.tokenResponse.access_token;
       $.ajax({
         url: url,
         type: 'GET',
         headers: {
-          'Authorization': 'Bearer ' + accessToken
+          'Authorization': 'Bearer ' + accessToken,
+          'Accept': contentType
         },
         success: function(response) {
           // Create a blob URL and open it in a new tab
-          var blob = new Blob([response], { type: response.type });
+          var blob = new Blob([response], { type: contentType });
           var blobUrl = URL.createObjectURL(blob);
           window.open(blobUrl, '_blank');
         },
@@ -179,6 +180,5 @@
   };
 
 })(window);
-
 
 
