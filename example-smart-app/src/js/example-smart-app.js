@@ -141,9 +141,9 @@
     if (p.docRef.length > 0) {
       var docRefHtml = '<h2>Document References</h2><table class="table"><thead><tr><th>Document Name</th><th>Action</th></tr></thead><tbody>';
       p.docRef.forEach(function(doc) {
-        var docUrl = doc.content[0].attachment.url;
+        var docId = doc.id;
         docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td>';
-        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + docUrl + '\', \'' + smart.tokenResponse.access_token + '\')">Open</button></td></tr>';
+        docRefHtml += '<td><button class="btn btn-primary" onclick="openDocument(\'' + docId + '\', \'' + smart.tokenResponse.access_token + '\')">Open</button></td></tr>';
       });
       docRefHtml += '</tbody></table>';
       $('#document-references').html(docRefHtml);
@@ -152,30 +152,23 @@
     }
   };
 
-  window.openDocument = function(url, token) {
-    fetch(url, {
+  window.openDocument = function(docId, token) {
+    var binaryUrl = '/Binary/' + docId;  // Construct the Binary resource URL
+    fetch(binaryUrl, {
       headers: {
         'Authorization': 'Bearer ' + token,
         'Accept': 'application/pdf'  // Adjust this based on the expected media type
       }
     })
-    .then(response => response.json())
-    .then(data => {
-      var binaryUrl = data.content[0].attachment.url;
-      fetch(binaryUrl, {
-        headers: {
-          'Authorization': 'Bearer ' + token
-        }
-      })
-      .then(response => response.blob())
-      .then(blob => {
-        const url = window.URL.createObjectURL(blob);
-        window.open(url, '_blank');
-      });
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
     })
     .catch(error => console.error('Error fetching document:', error));
   };
 
 })(window);
+
 
 
