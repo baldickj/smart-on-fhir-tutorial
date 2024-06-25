@@ -168,14 +168,20 @@
         type: 'GET',
         headers: {
           'Authorization': 'Bearer ' + accessToken,
-          'Accept': contentType // Adjust the Accept header as required
-        },
-        xhrFields: {
-          responseType: 'blob'
+          'Accept': 'application/fhir+json' // We expect a FHIR Binary resource
         },
         success: function(response) {
-          // Create a blob URL and open it in a new tab
-          var blob = new Blob([response], { type: contentType });
+          // The content is base64 encoded, decode it
+          var binaryData = atob(response.data);
+          // Convert binary string to array buffer
+          var len = binaryData.length;
+          var buffer = new ArrayBuffer(len);
+          var view = new Uint8Array(buffer);
+          for (var i = 0; i < len; i++) {
+            view[i] = binaryData.charCodeAt(i);
+          }
+          // Create a blob from the buffer and open it
+          var blob = new Blob([view], { type: contentType });
           var blobUrl = URL.createObjectURL(blob);
           window.open(blobUrl, '_blank');
         },
@@ -187,5 +193,3 @@
   };
 
 })(window);
-
-
