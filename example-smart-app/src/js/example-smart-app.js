@@ -18,9 +18,11 @@
           type: 'Observation',
           query: {
             code: {
-              $or: ['http://loinc.org|8302-2', 'http://loinc.org|8462-4',
-                    'http://loinc.org|8480-6', 'http://loinc.org|2085-9',
-                    'http://loinc.org|2089-1']
+              $or: [
+                'http://loinc.org|8302-2', 'http://loinc.org|8462-4',
+                'http://loinc.org|8480-6', 'http://loinc.org|2085-9',
+                'http://loinc.org|2089-1'
+              ]
             }
           }
         });
@@ -88,15 +90,15 @@
 
   function defaultPatient() {
     return {
-      fname: { value: '' },
-      lname: { value: '' },
-      gender: { value: '' },
-      birthdate: { value: '' },
-      height: { value: '' },
-      systolicbp: { value: '' },
-      diastolicbp: { value: '' },
-      ldl: { value: '' },
-      hdl: { value: '' },
+      fname: '',
+      lname: '',
+      gender: '',
+      birthdate: '',
+      height: '',
+      systolicbp: '',
+      diastolicbp: '',
+      ldl: '',
+      hdl: '',
       docRef: []
     };
   }
@@ -120,9 +122,9 @@
 
   function getQuantityValueAndUnit(ob) {
     if (typeof ob != 'undefined' &&
-      typeof ob.valueQuantity != 'undefined' &&
-      typeof ob.valueQuantity.value != 'undefined' &&
-      typeof ob.valueQuantity.unit != 'undefined') {
+        typeof ob.valueQuantity != 'undefined' &&
+        typeof ob.valueQuantity.value != 'undefined' &&
+        typeof ob.valueQuantity.unit != 'undefined') {
       return ob.valueQuantity.value + ' ' + ob.valueQuantity.unit;
     } else {
       return undefined;
@@ -146,8 +148,10 @@
       var docRefHtml = '<h2>Document References</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
       p.docRef.forEach(function(doc) {
         var docUrl = doc.content[0].attachment.url;
+        var docId = docUrl.split('/').pop(); // Extracting the ID from the URL
+        var contentType = doc.content[0].attachment.contentType;
         docRefHtml += '<tr><td>' + (doc.description || 'No description available') + '</td>';
-        docRefHtml += '<td><button onclick="openDocument(\'' + docUrl + '\', \'' + doc.content[0].attachment.contentType + '\')">Open</button></td></tr>';
+        docRefHtml += '<td><button onclick="openDocument(\'' + docId + '\', \'' + contentType + '\')">Open</button></td></tr>';
       });
       docRefHtml += '</table>';
       $('#document-references').html(docRefHtml);
@@ -156,20 +160,22 @@
     }
   };
 
-  window.openDocument = function(url, contentType) {
+  window.openDocument = function(docId, contentType) {
     FHIR.oauth2.ready(function(smart) {
       var accessToken = smart.tokenResponse.access_token;
       $.ajax({
-        url: url,
+        url: smart.server.serviceUrl + '/Binary/' + docId,
         type: 'GET',
         headers: {
           'Authorization': 'Bearer ' + accessToken,
-          'Accept': contentType
+          'Accept': contentType // Adjust the Accept header as required
+        },
+        xhrFields: {
+          responseType: 'blob'
         },
         success: function(response) {
           // Create a blob URL and open it in a new tab
-          var blob = new Blob([response], { type: contentType });
-          var blobUrl = URL.createObjectURL(blob);
+          var blobUrl = URL.createObjectURL(response);
           window.open(blobUrl, '_blank');
         },
         error: function() {
@@ -180,5 +186,4 @@
   };
 
 })(window);
-
 
