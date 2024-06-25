@@ -175,7 +175,8 @@
         },
         success: function(response) {
           // Create a blob URL and open it in a new tab
-          var blobUrl = URL.createObjectURL(response);
+          var blob = new Blob([response], { type: contentType });
+          var blobUrl = URL.createObjectURL(blob);
           window.open(blobUrl, '_blank');
         },
         error: function() {
@@ -186,4 +187,5 @@
   };
 
 })(window);
+
 
