@@ -170,7 +170,11 @@
           'Authorization': 'Bearer ' + accessToken,
           'Accept': contentType // Use the actual content type from the document reference
         },
-        success: function(response) {
+        success: function(response, status, xhr) {
+          // Extract the filename from the Content-Disposition header
+          var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+          var filename = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].replace(/"/g, '') : 'document.pdf';
+
           // If the response is base64 encoded
           if (response.data) {
             var binaryData = atob(response.data);
@@ -186,12 +190,22 @@
             // Create a blob from the buffer and open it
             var blob = new Blob([view], { type: contentType });
             var blobUrl = URL.createObjectURL(blob);
-            window.open(blobUrl, '_blank');
+            var a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
           } else {
             // For non-base64 content, handle it directly
             var blob = new Blob([response], { type: contentType });
             var blobUrl = URL.createObjectURL(blob);
-            window.open(blobUrl, '_blank');
+            var a = document.createElement('a');
+            a.href = blobUrl;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
           }
         },
         error: function() {
@@ -202,4 +216,5 @@
   };
 
 })(window);
+
 
