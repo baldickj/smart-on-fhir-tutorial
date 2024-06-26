@@ -171,26 +171,28 @@
           'Accept': contentType // Use the actual content type from the document reference
         },
         success: function(response) {
-          // If the content is base64 encoded, we need to decode it
-          var binaryData;
+          // If the response is base64 encoded
           if (response.data) {
-            binaryData = atob(response.data);
+            var binaryData = atob(response.data);
+
+            // Convert binary string to array buffer
+            var len = binaryData.length;
+            var buffer = new ArrayBuffer(len);
+            var view = new Uint8Array(buffer);
+            for (var i = 0; i < len; i++) {
+              view[i] = binaryData.charCodeAt(i);
+            }
+
+            // Create a blob from the buffer and open it
+            var blob = new Blob([view], { type: contentType });
+            var blobUrl = URL.createObjectURL(blob);
+            window.open(blobUrl, '_blank');
           } else {
-            binaryData = response;
+            // For non-base64 content, handle it directly
+            var blob = new Blob([response], { type: contentType });
+            var blobUrl = URL.createObjectURL(blob);
+            window.open(blobUrl, '_blank');
           }
-
-          // Convert binary string to array buffer
-          var len = binaryData.length;
-          var buffer = new ArrayBuffer(len);
-          var view = new Uint8Array(buffer);
-          for (var i = 0; i < len; i++) {
-            view[i] = binaryData.charCodeAt(i);
-          }
-
-          // Create a blob from the buffer and open it
-          var blob = new Blob([view], { type: contentType });
-          var blobUrl = URL.createObjectURL(blob);
-          window.open(blobUrl, '_blank');
         },
         error: function() {
           console.log('Failed to fetch document');
@@ -200,3 +202,4 @@
   };
 
 })(window);
+
