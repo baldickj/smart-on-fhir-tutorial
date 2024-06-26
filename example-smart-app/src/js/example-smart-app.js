@@ -170,43 +170,18 @@
           'Authorization': 'Bearer ' + accessToken,
           'Accept': contentType // Use the actual content type from the document reference
         },
+        xhrFields: {
+          responseType: 'arraybuffer' // Ensure the response is treated as binary data
+        },
         success: function(response, status, xhr) {
           // Extract the filename from the Content-Disposition header
           var contentDisposition = xhr.getResponseHeader('Content-Disposition');
           var filename = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].replace(/"/g, '') : 'document.pdf';
 
-          // If the response is base64 encoded
-          if (response.data) {
-            var binaryData = atob(response.data);
-
-            // Convert binary string to array buffer
-            var len = binaryData.length;
-            var buffer = new ArrayBuffer(len);
-            var view = new Uint8Array(buffer);
-            for (var i = 0; i < len; i++) {
-              view[i] = binaryData.charCodeAt(i);
-            }
-
-            // Create a blob from the buffer and open it
-            var blob = new Blob([view], { type: contentType });
-            var blobUrl = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          } else {
-            // For non-base64 content, handle it directly
-            var blob = new Blob([response], { type: contentType });
-            var blobUrl = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = blobUrl;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-          }
+          // Create a blob from the response and open it in a new tab
+          var blob = new Blob([response], { type: contentType });
+          var blobUrl = URL.createObjectURL(blob);
+          window.open(blobUrl, '_blank');
         },
         error: function() {
           console.log('Failed to fetch document');
@@ -216,5 +191,6 @@
   };
 
 })(window);
+
 
 
