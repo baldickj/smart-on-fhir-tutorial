@@ -168,11 +168,17 @@
         type: 'GET',
         headers: {
           'Authorization': 'Bearer ' + accessToken,
-          'Accept': 'application/fhir+json' // We expect a FHIR Binary resource
+          'Accept': contentType // Use the actual content type from the document reference
         },
         success: function(response) {
-          // The content is base64 encoded, decode it
-          var binaryData = atob(response.data);
+          // If the content is base64 encoded, we need to decode it
+          var binaryData;
+          if (response.data) {
+            binaryData = atob(response.data);
+          } else {
+            binaryData = response;
+          }
+
           // Convert binary string to array buffer
           var len = binaryData.length;
           var buffer = new ArrayBuffer(len);
@@ -180,6 +186,7 @@
           for (var i = 0; i < len; i++) {
             view[i] = binaryData.charCodeAt(i);
           }
+
           // Create a blob from the buffer and open it
           var blob = new Blob([view], { type: contentType });
           var blobUrl = URL.createObjectURL(blob);
