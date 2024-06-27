@@ -163,30 +163,32 @@
   window.openDocument = function(docId, contentType) {
     FHIR.oauth2.ready(function(smart) {
       var accessToken = smart.tokenResponse.access_token;
-      $.ajax({
-        url: smart.server.serviceUrl + '/Binary/' + docId,
-        type: 'GET',
-        headers: {
-          'Authorization': 'Bearer ' + accessToken,
-          'Accept': contentType // Use the actual content type from the document reference
-        },
-        xhrFields: {
-          responseType: 'arraybuffer' // Ensure the response is treated as binary data
-        },
-        success: function(response, status, xhr) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', smart.server.serviceUrl + '/Binary/' + docId);
+      xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
+      xhr.setRequestHeader('Accept', contentType);
+      xhr.responseType = 'arraybuffer';
+
+      xhr.onload = function() {
+        if (xhr.status === 200) {
           // Extract the filename from the Content-Disposition header
           var contentDisposition = xhr.getResponseHeader('Content-Disposition');
           var filename = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].replace(/"/g, '') : 'document.pdf';
 
           // Create a blob from the response and open it in a new tab
-          var blob = new Blob([response], { type: contentType });
+          var blob = new Blob([xhr.response], { type: contentType });
           var blobUrl = URL.createObjectURL(blob);
           window.open(blobUrl, '_blank');
-        },
-        error: function() {
+        } else {
           console.log('Failed to fetch document');
         }
-      });
+      };
+
+      xhr.onerror = function() {
+        console.log('Failed to fetch document');
+      };
+
+      xhr.send();
     });
   };
 
