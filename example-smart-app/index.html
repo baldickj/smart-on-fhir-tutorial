@@ -1,129 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta http-equiv='X-UA-Compatible' content='IE=edge' />
     <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
-    <title>baldickj Example-SMART-App</title>
+    <title>Patient Education</title>
 
     <link rel='stylesheet' type='text/css' href='./src/css/example-smart-app.css'>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-        }
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-bottom: 1px solid #dee2e6;
-        }
-        .header h1 {
-            margin: 0;
-        }
-        .logo {
-            width: 100px;
-        }
-        .content {
-            padding: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        th, td {
-            border: 1px solid #dee2e6;
-            padding: 8px;
-            text-align: left;
-        }
-        th {
-            background-color: #f8f9fa;
-        }
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        button {
-            padding: 5px 10px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div id='errors'></div>
-    <div class="header">
-        <h1>Example-SMART-App</h1>
-        <img src="./src/images/M_logo.bmp" alt="Logo" class="logo">
+    <!--
+      Temporarily disable cerner-smart-embeddable-lib
+      <link rel='stylesheet' type='text/css' href='./lib/css/cerner-smart-embeddable-lib-1.0.0.min.css'>
+    -->
+  </head>
+  <body>
+    <div id='errors'>
     </div>
     <div id="loading" class="spinner">
-        <div class="bounce1"></div>
-        <div class="bounce2"></div>
-        <div class="bounce3"></div>
+      <div class="bounce1"></div>
+      <div class="bounce2"></div>
+      <div class="bounce3"></div>
     </div>
-    <div id='holder' class="content">
-        <h2>Patient Resource</h2>
-        <table>
-            <tr>
-                <th>First Name:</th>
-                <td id='fname'></td>
-            </tr>
-            <tr>
-                <th>Last Name:</th>
-                <td id='lname'></td>
-            </tr>
-            <tr>
-                <th>Gender:</th>
-                <td id='gender'></td>
-            </tr>
-            <tr>
-                <th>Date of Birth:</th>
-                <td id='birthdate'></td>
-            </tr>
-        </table>
-        <h2>Observation Resource</h2>
-        <table>
-            <tr>
-                <th>Height:</th>
-                <td id='height'></td>
-            </tr>
-            <tr>
-                <th>Systolic Blood Pressure:</th>
-                <td id='systolicbp'></td>
-            </tr>
-            <tr>
-                <th>Diastolic Blood Pressure:</th>
-                <td id='diastolicbp'></td>
-            </tr>
-            <tr>
-                <th>LDL:</th>
-                <td id='ldl'></td>
-            </tr>
-            <tr>
-                <th>HDL:</th>
-                <td id='hdl'></td>
-            </tr>
-        </table>
+    <div id='holder' >
+      <img src='./src/images/M_logo.bmp' alt='Logo' style='float: right; width: 100px; height: 100px;'>
+      <h2>Patient Education</h2>
 
-        <h2>DocumentReference Resource</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Document Name</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="document-references">
-                <!-- Document references will be inserted here -->
-            </tbody>
-        </table>
+      <h2>Patient Resource</h2>
+      <table>
+        <tr>
+          <th>First Name:</th>
+          <td id='fname'></td>
+        </tr>
+        <tr>
+          <th>Last Name:</th>
+          <td id='lname'></td>
+        </tr>
+        <tr>
+          <th>Gender:</th>
+          <td id='gender'></td>
+        </tr>
+        <tr>
+          <th>Date of Birth:</th>
+          <td id='birthdate'></td>
+        </tr>
+      </table>
+      
+      <h2>DocumentReference Resource</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Document Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="document-references">
+          <!-- Document references will be inserted here -->
+        </tbody>
+      </table>
+      
     </div>
     <!-- Required JS files to enable this page to embed within an MPage -->
     <!--
@@ -143,22 +75,21 @@
     <script src='./lib/js/fhir-client-cerner-additions-1.0.0.js'></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
-        extractData().then(
-            //Display Patient Demographics and Observations if extractData was success
-            function(p) {
-                drawVisualization(p);
-            },
+      extractData().then(
+        //Display Patient Demographics and Observations if extractData was success
+        function(p) {
+          drawVisualization(p);
+        },
 
-            //Display 'Failed to call FHIR Service' if extractData failed
-            function() {
-                $('#loading').hide();
-                $('#errors').html('<p> Failed to call FHIR Service </p>');
-            }
-        );
+        //Display 'Failed to call FHIR Service' if extractData failed
+        function() {
+          $('#loading').hide();
+          $('#errors').html('<p> Failed to call FHIR Service </p>');
+        }
+      );
     </script>
-</body>
+  </body>
 </html>
-
 
 
 
