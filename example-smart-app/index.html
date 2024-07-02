@@ -25,9 +25,16 @@
         .header .title {
             display: flex;
             align-items: center;
+            flex-direction: column;
         }
         .header .title h1 {
-            margin-right: 20px;
+            margin: 0;
+        }
+        .header .title h2 {
+            margin: 0;
+            font-size: 1rem;
+            font-weight: 400;
+            color: #666;
         }
         .logo {
             width: 100px;
@@ -68,7 +75,8 @@
     <div id='errors'></div>
     <div class="header">
         <div class="title">
-            <h1 id="patient-name">Patient Education</h1>
+            <h1>Patient Education</h1>
+            <h2 id="patient-name"></h2>
         </div>
         <img src="./src/images/M_logo.bmp" alt="Logo" class="logo">
     </div>
@@ -144,3 +152,4 @@
     </script>
 </body>
 </html>
+
