@@ -148,7 +148,7 @@
     $('#patient-name').text(p.fname + ' ' + p.lname);
 
     if (p.docRef.length > 0) {
-      var docRefHtml = '<h2>Document References</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
+      var docRefHtml = '<h2>Education Added this Visit</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
       p.docRef.forEach(function(doc) {
         var docUrl = doc.content[0].attachment.url;
         var docId = docUrl.split('/').pop(); // Extracting the ID from the URL
