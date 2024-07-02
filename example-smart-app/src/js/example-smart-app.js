@@ -144,6 +144,9 @@
     $('#ldl').html(p.ldl);
     $('#hdl').html(p.hdl);
 
+      // Concatenate first name and last name and set it in the header
+    $('#patient-name').text(p.fname + ' ' + p.lname);
+
     if (p.docRef.length > 0) {
       var docRefHtml = '<h2>Document References</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
       p.docRef.forEach(function(doc) {
