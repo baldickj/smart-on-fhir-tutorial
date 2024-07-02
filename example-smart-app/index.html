@@ -22,6 +22,13 @@
         .header h1 {
             margin: 0;
         }
+        .header .title {
+            display: flex;
+            align-items: center;
+        }
+        .header .title h1 {
+            margin-right: 20px;
+        }
         .logo {
             width: 100px;
         }
@@ -60,7 +67,9 @@
 <body>
     <div id='errors'></div>
     <div class="header">
-        <h1>Patient Education</h1>
+        <div class="title">
+            <h1 id="patient-name">Patient Education</h1>
+        </div>
         <img src="./src/images/M_logo.bmp" alt="Logo" class="logo">
     </div>
     <div id="loading" class="spinner">
@@ -121,12 +130,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script>
         extractData().then(
-            //Display Patient Demographics and Observations if extractData was success
+            // Display Patient Demographics and Observations if extractData was success
             function(p) {
                 drawVisualization(p);
             },
 
-            //Display 'Failed to call FHIR Service' if extractData failed
+            // Display 'Failed to call FHIR Service' if extractData failed
             function() {
                 $('#loading').hide();
                 $('#errors').html('<p> Failed to call FHIR Service </p>');
