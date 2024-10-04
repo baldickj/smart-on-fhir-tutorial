@@ -261,6 +261,22 @@ function sendToEMR() {
     }
 }
 
+  function performSearch() {
+    const query = $('#search-query').val().trim();
+    if (query) {
+        // Get the Graph API token
+        getGraphToken().then(function(tokenResponse) {
+            const token = tokenResponse.access_token;
+            // Call the searchDocuments function with the query
+            searchDocuments(token, query).then(displaySearchResults);
+        }).catch(function(error) {
+            console.log('Error getting token', error);
+        });
+    } else {
+        alert('Please enter a search term.');
+    }
+}
+
 
 })(window);
 
