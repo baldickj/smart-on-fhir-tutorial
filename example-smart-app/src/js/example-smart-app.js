@@ -7,6 +7,21 @@
       ret.reject();
     }
 
+    function getGraphToken() {
+    var tokenUrl = `https://login.microsoftonline.com/8dc983c9-2077-4d2b-85f6-bb244ae6004e/oauth2/v2.0/token`;
+
+    return $.ajax({
+        url: tokenUrl,
+        method: 'POST',
+        data: {
+            grant_type: 'client_credentials',
+            client_id: 'd1038bf5-f657-438c-a8a9-c368cfc0f392',
+            client_secret: '1C48Q~TwZR~Al2a2CK.Ce-dzEL8GDstJ.BJU9bT6',
+            scope: 'https://graph.microsoft.com/.default'
+        }
+    });
+}
+
     function onReady(smart) {
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
@@ -194,6 +209,56 @@
       xhr.send();
     });
   };
+
+
+  function searchDocuments(token) {
+    var siteId = 'moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684';
+    var listId = '893983b1-68e7-40f4-962f-8e56ec5403bd';
+    var searchUrl = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`;
+
+    return $.ajax({
+        url: searchUrl,
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        data: {
+            '$filter': "fields/Title ne null and fields/File_x0020_Type eq 'pdf'"
+        }
+    });
+}
+
+  function displaySearchResults(items) {
+    var searchHtml = '<h2>Search Results</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
+    
+    items.forEach(function(item) {
+        var docTitle = item.fields.Title;
+        var docUrl = item.webUrl;
+
+        searchHtml += '<tr><td>' + docTitle + '</td>';
+        searchHtml += '<td><button onclick="selectDocument(\'' + docUrl + '\')">Select</button></td></tr>';
+    });
+    
+    searchHtml += '</table>';
+    $('#search-results').html(searchHtml);
+}
+
+  var selectedDocumentUrl = '';
+
+function selectDocument(url) {
+    selectedDocumentUrl = url;
+    $('#selected-document').text('Selected Document: ' + url);
+}
+
+function sendToEMR() {
+    if (selectedDocumentUrl) {
+        // Add logic to send this document URL to the EMR as a DocumentReference resource
+        console.log('Sending document to EMR:', selectedDocumentUrl);
+    } else {
+        alert('No document selected.');
+    }
+}
+
 
 })(window);
 
