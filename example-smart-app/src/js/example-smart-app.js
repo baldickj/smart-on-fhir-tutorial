@@ -261,23 +261,7 @@ function sendToEMR() {
     }
 }
 
-(function(window) {
-    function getGraphToken() {
-        var tokenUrl = `https://login.microsoftonline.com/8dc983c9-2077-4d2b-85f6-bb244ae6004e/oauth2/v2.0/token`;
-
-        return $.ajax({
-            url: tokenUrl,
-            method: 'POST',
-            data: {
-                grant_type: 'client_credentials',
-                client_id: 'd1038bf5-f657-438c-a8a9-c368cfc0f392',
-                client_secret: '1C48Q~TwZR~Al2a2CK.Ce-dzEL8GDstJ.BJU9bT6',
-                scope: 'https://graph.microsoft.com/.default'
-            }
-        });
-    }
-
-    window.performSearch = function() {
+window.performSearch = function() {
         const query = $('#search-query').val().trim();
         if (query) {
             getGraphToken().then(function(tokenResponse) {
@@ -294,10 +278,6 @@ function sendToEMR() {
             alert('Please enter a search term.');
         }
     };
-
-    // Other functions such as searchDocuments and displaySearchResults
-
-})(window);
 
 
     $(document).ready(function() {
