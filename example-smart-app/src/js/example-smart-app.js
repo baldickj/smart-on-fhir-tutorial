@@ -211,7 +211,7 @@
   };
 
 
-  function searchDocuments(token) {
+function searchDocuments(token, query) {
     var siteId = 'moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684';
     var listId = '893983b1-68e7-40f4-962f-8e56ec5403bd';
     var searchUrl = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`;
@@ -223,10 +223,12 @@
             'Authorization': `Bearer ${token}`
         },
         data: {
-            '$filter': "fields/Title ne null and fields/File_x0020_Type eq 'pdf'"
+            // Search for PDF files whose titles contain the query
+            '$filter': `contains(fields/Title, '${query}') and fields/File_x0020_Type eq 'pdf'`
         }
     });
 }
+
 
   function displaySearchResults(items) {
     var searchHtml = '<h2>Search Results</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
