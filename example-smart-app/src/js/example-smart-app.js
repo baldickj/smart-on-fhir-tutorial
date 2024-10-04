@@ -261,21 +261,34 @@ function sendToEMR() {
     }
 }
 
-  function performSearch() {
-    const query = $('#search-query').val().trim();
-    if (query) {
-        // Get the Graph API token
-        getGraphToken().then(function(tokenResponse) {
-            const token = tokenResponse.access_token;
-            // Call the searchDocuments function with the query
-            searchDocuments(token, query).then(displaySearchResults);
-        }).catch(function(error) {
-            console.log('Error getting token', error);
-        });
-    } else {
-        alert('Please enter a search term.');
+(function(window) {
+    // Other function definitions...
+
+    function performSearch() {
+        const query = $('#search-query').val().trim();
+        if (query) {
+            getGraphToken().then(function(tokenResponse) {
+                const token = tokenResponse.access_token;
+                searchDocuments(token, query)
+                    .then(displaySearchResults)
+                    .catch(function(error) {
+                        console.log('Error searching documents', error);
+                    });
+            }).catch(function(error) {
+                console.log('Error getting token', error);
+            });
+        } else {
+            alert('Please enter a search term.');
+        }
     }
-}
+
+    $(document).ready(function() {
+        $('#search-button').click(performSearch); // Attach the click event handler
+    });
+
+    // Other function definitions...
+})(window);
+
 
 
 })(window);
