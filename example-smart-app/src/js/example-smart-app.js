@@ -285,7 +285,7 @@ window.performSearch = function() {
     });
 
     // Other function definitions...
-})(window);
+
 
 
 
