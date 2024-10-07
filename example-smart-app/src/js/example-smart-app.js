@@ -188,7 +188,7 @@ function sendToEMR() {
     fetch(fhirEndpoint, {
         method: 'POST',
         headers: {
-            'Authorization': 'Bearer ' + accessToken
+            'Authorization': 'Bearer ' + accessToken ,
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         },
