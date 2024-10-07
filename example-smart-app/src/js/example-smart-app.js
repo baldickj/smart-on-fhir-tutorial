@@ -1,13 +1,3 @@
-(function(window) {
-  window.extractData = function() {
-    var ret = $.Deferred();
-
-    function onError() {
-      console.log('Loading error', arguments);
-      ret.reject();
-    }
-
-    // Moved getGraphToken here, at the same level as onError
     function getGraphToken() {
       var tokenUrl = `https://login.microsoftonline.com/8dc983c9-2077-4d2b-85f6-bb244ae6004e/oauth2/v2.0/token`;
 
@@ -26,6 +16,28 @@
         console.error("Failed to get token:", textStatus, errorThrown);
       });
     }
+
+
+
+
+(function(window) {
+  window.extractData = function() {
+    var ret = $.Deferred();
+
+    function onError() {
+      console.log('Loading error', arguments);
+      ret.reject();
+    }
+
+    // Move  get graph Function back here if needed
+
+
+
+
+
+
+
+    
 
     function onReady(smart) {
       if (smart.hasOwnProperty('patient')) {
