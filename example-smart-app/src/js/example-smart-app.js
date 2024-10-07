@@ -1,4 +1,4 @@
-const hardCodedToken = 'eyJ0eXAiOiJKV1QiLCJub25jZSI6IklvaTQ1TWVJSGFxWV9hcndNR2xvZGRLZEdPMjFxUnFVb1FMejd4MHdhc0kiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1jN2wzSXo5M2c3dXdnTmVFbW13X1dZR1BrbyIsImtpZCI6Ik1jN2wzSXo5M2c3dXdnTmVFbW13X1dZR1BrbyJ9.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC84ZGM5ODNjOS0yMDc3LTRkMmItODVmNi1iYjI0NGFlNjAwNGUvIiwiaWF0IjoxNzI4MzE5NjkzLCJuYmYiOjE3MjgzMTk2OTMsImV4cCI6MTcyODMyMzgzMywiYWNjdCI6MCwiYWNyIjoiMSIsImFpbyI6IkFVUUF1LzhZQUFBQWUwTlY0YnNRU2FxRDI2d2hYdTR4d2tsRDArOXFDaFlVWDVEQ3NoT3BZU1Q4ZlRvVkdvVVlRK29PdnBoR09tN0tudWR1R2drVkxScVNnMXd6eXRqdkpRPT0iLCJhbXIiOlsicHdkIiwicnNhIl0sImFwcF9kaXNwbGF5bmFtZSI6Ik11bGVTb2Z0IFBvc3RtYW4iLCJhcHBpZCI6ImQxMDM4YmY1LWY2NTctNDM4Yy1hOGE5LWMzNjhjZmMwZjM5MiIsImFwcGlkYWNyIjoiMSIsImRldmljZWlkIjoiM2ZiYTYxZmQtNDU3OS00ODAxLTg4ZWItM2IwODk3NjBiYjA5IiwiZmFtaWx5X25hbWUiOiJCYWxkaWNrIiwiZ2l2ZW5fbmFtZSI6Ikphc29uIiwiaWR0eXAiOiJ1c2VyIiwiaXBhZGRyIjoiMjYwMToyNDY6NTYwMDpmYTIwOmRkYTY6NjUzMzo1YjZmOmVhZjAiLCJuYW1lIjoiQmFsZGljaywgSmFzb24gUiIsIm9pZCI6IjQxMjBmYjI2LWFjY2EtNDA4NS04NTI1LThkMjk0NmExNzgxOSIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0xNzkwMzgwNDAwLTgwMjcxNDA2OS03OTkwNzE5NC02NzA1NCIsInBsYXRmIjoiMyIsInB1aWQiOiIxMDAzMjAwMDQ1OEU1RDMyIiwicmgiOiIwLkFSSUF5WVBKalhjZ0swMkY5cnNrU3VZQVRnTUFBQUFBQUFBQXdBQUFBQUFBQUFEV0FLUS4iLCJzY3AiOiJGaWxlcy5SZWFkV3JpdGUuQWxsIExpc3RJdGVtcy5TZWxlY3RlZE9wZXJhdGlvbnMuU2VsZWN0ZWQgTWFpbC5SZWFkIFNpdGVzLlJlYWRXcml0ZS5BbGwgVXNlci5SZWFkIHByb2ZpbGUgb3BlbmlkIGVtYWlsIiwic2lnbmluX3N0YXRlIjpbImttc2kiXSwic3ViIjoiT2RkMVBiZjhZZm5tSHQwMlJDTUVfYlJzX3ZMaEpXVzMwTHpNMHVHOVRhSSIsInRlbmFudF9yZWdpb25fc2NvcGUiOiJOQSIsInRpZCI6IjhkYzk4M2M5LTIwNzctNGQyYi04NWY2LWJiMjQ0YWU2MDA0ZSIsInVuaXF1ZV9uYW1lIjoiSmFzb24uQmFsZGlja0Btb2ZmaXR0Lm9yZyIsInVwbiI6Ikphc29uLkJhbGRpY2tAbW9mZml0dC5vcmciLCJ1dGkiOiJ0N3k5dDFOYmEwNlA0Yl9HUEU2QkFBIiwidmVyIjoiMS4wIiwid2lkcyI6WyJiNzlmYmY0ZC0zZWY5LTQ2ODktODE0My03NmIxOTRlODU1MDkiXSwieG1zX2lkcmVsIjoiMSA4IiwieG1zX3N0Ijp7InN1YiI6ImVSV29BakRnancta21ad1A4RFBsZmZ5OEJyQmtIZFYtMnpGREJsUFRtVHMifSwieG1zX3RjZHQiOjE0MTk4OTQ4NDd9.uw9nPCJbwCu_ud4uQkJjY8Y5Je2ecwZaHw6Sd7gsNeRFJO_Qo8y8-aDatq6nODb6lyiAULFCiRe9FTfJ-ATKHkDq1SA2quNc5Y1Y1tIv8-cF1ghMwsxuYNDP2yo5jUNiGdMmdHh8bPOK98C5DVGt2jrVqlE4L9JPQwT9YKuAYfE8khCnTHJo8pw8Dzty8jWWut6Ggajmi7vi6EVSzEYqUy-3IR2SVBPKxAtfxMCxspSPdrKlN6GX3Q9hzVtjtKXZgT_BDNkHBFScms9Cd4uSLh_qkUepWoSVu9pBG5blqJlVY-Su0KFYRau5hk0gdLwBxIwHpO5k2viduCASopJAQw';
+const hardCodedToken = 'eyJ0eXAiOiJKV1QiLCJub25jZSI6Imlnam0ycVdYNkV2WE5TWmZmU1pCcUNHbXRadHhYSEI2cl9zdTBKeDF6aDgiLCJhbGciOiJSUzI1NiIsIng1dCI6Ik1jN2wzSXo5M2c3dXdnTmVFbW13X1dZR1BrbyIsImtpZCI6Ik1jN2wzSXo5M2c3dXdnTmVFbW13X1dZR1BrbyJ9.eyJhdWQiOiJodHRwczovL2dyYXBoLm1pY3Jvc29mdC5jb20iLCJpc3MiOiJodHRwczovL3N0cy53aW5kb3dzLm5ldC84ZGM5ODNjOS0yMDc3LTRkMmItODVmNi1iYjI0NGFlNjAwNGUvIiwiaWF0IjoxNzI4MzI2NDQ2LCJuYmYiOjE3MjgzMjY0NDYsImV4cCI6MTcyODMzMTE4MSwiYWNjdCI6MCwiYWNyIjoiMSIsImFpbyI6IkFVUUF1LzhZQUFBQVJHVEVKMXZZM0hHNVBNeko2aEZOdnlKOG90MUZwcmpZV2hmU0orMG0vSHoyNHBjb1l5MGt6ZGV1WE9rTVdRb3pXanY2amRRcEVad1Qyd0xvN3hrWnd3PT0iLCJhbXIiOlsicHdkIiwicnNhIl0sImFwcF9kaXNwbGF5bmFtZSI6Ik11bGVTb2Z0IFBvc3RtYW4iLCJhcHBpZCI6ImQxMDM4YmY1LWY2NTctNDM4Yy1hOGE5LWMzNjhjZmMwZjM5MiIsImFwcGlkYWNyIjoiMSIsImRldmljZWlkIjoiM2ZiYTYxZmQtNDU3OS00ODAxLTg4ZWItM2IwODk3NjBiYjA5IiwiZmFtaWx5X25hbWUiOiJCYWxkaWNrIiwiZ2l2ZW5fbmFtZSI6Ikphc29uIiwiaWR0eXAiOiJ1c2VyIiwiaXBhZGRyIjoiMjYwMToyNDY6NTYwMDpmYTIwOmRkYTY6NjUzMzo1YjZmOmVhZjAiLCJuYW1lIjoiQmFsZGljaywgSmFzb24gUiIsIm9pZCI6IjQxMjBmYjI2LWFjY2EtNDA4NS04NTI1LThkMjk0NmExNzgxOSIsIm9ucHJlbV9zaWQiOiJTLTEtNS0yMS0xNzkwMzgwNDAwLTgwMjcxNDA2OS03OTkwNzE5NC02NzA1NCIsInBsYXRmIjoiMyIsInB1aWQiOiIxMDAzMjAwMDQ1OEU1RDMyIiwicmgiOiIwLkFSSUF5WVBKalhjZ0swMkY5cnNrU3VZQVRnTUFBQUFBQUFBQXdBQUFBQUFBQUFEV0FLUS4iLCJzY3AiOiJGaWxlcy5SZWFkV3JpdGUuQWxsIExpc3RJdGVtcy5TZWxlY3RlZE9wZXJhdGlvbnMuU2VsZWN0ZWQgTWFpbC5SZWFkIFNpdGVzLlJlYWRXcml0ZS5BbGwgVXNlci5SZWFkIHByb2ZpbGUgb3BlbmlkIGVtYWlsIiwic2lnbmluX3N0YXRlIjpbImttc2kiXSwic3ViIjoiT2RkMVBiZjhZZm5tSHQwMlJDTUVfYlJzX3ZMaEpXVzMwTHpNMHVHOVRhSSIsInRlbmFudF9yZWdpb25fc2NvcGUiOiJOQSIsInRpZCI6IjhkYzk4M2M5LTIwNzctNGQyYi04NWY2LWJiMjQ0YWU2MDA0ZSIsInVuaXF1ZV9uYW1lIjoiSmFzb24uQmFsZGlja0Btb2ZmaXR0Lm9yZyIsInVwbiI6Ikphc29uLkJhbGRpY2tAbW9mZml0dC5vcmciLCJ1dGkiOiJHby1jQ18xbHZFR2Jla0hLUXV3WEFBIiwidmVyIjoiMS4wIiwid2lkcyI6WyJiNzlmYmY0ZC0zZWY5LTQ2ODktODE0My03NmIxOTRlODU1MDkiXSwieG1zX2lkcmVsIjoiMSAzMCIsInhtc19zdCI6eyJzdWIiOiJlUldvQWpEZ2p3LWttWndQOERQbGZmeThCckJrSGRWLTJ6RkRCbFBUbVRzIn0sInhtc190Y2R0IjoxNDE5ODk0ODQ3fQ.G1Qn2zQArruYxgkH8pYomfVSmTKdkahrngmG1j_4IOeZ9L6h8ys6dSHtn-ZGK9f0HmXcg0f4cZxBSmCtteVqGMCzmTJXr5kQB4fYcEkkmmHlRD3d1zdf_lahjFqW96od3gDPRNYqybcdslH-E3sHmhdDEG8Bvs92ix-9avVVKmlqv_Xsplu94UEyQa5QPTSqiOWCPzfG-tcUlHiHeffj1UXO5Pp1qgjZyzkuj8bnuLoctuqamgM_20ITtEvU1J_mttD7uprzMBbECwRFXtXiglwbRzuKfwafb_hpBQpv2IkIvrPxELiQ1RKIcB7NI04-vf9TJ1W-DHXOjZHWY-Wqzg';
 
 var selectedDocumentUrl = '';
 
@@ -129,6 +129,92 @@ function getGraphToken() {
     return ret.promise();
   };
 
+function sendToEMR() {
+    // Ensure a document has been selected
+    if (!selectedDocumentUrl) {
+        alert('No document selected.');
+        return;
+    }
+
+    // Define the document reference payload
+    const documentReference = {
+        'resourceType': 'DocumentReference',
+        'subject': {
+            'reference': patient // May need to change if this variable is not getting passed
+        },
+        'type': {
+            'coding': [
+{ "coding": [ { "system": "https://fhir.cerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72", "code": "1046116289" } ] }
+            ]
+        },
+        'author': [
+            {
+                'reference': 'Practitioner/9767220' // Replace with actual practitioner reference
+            }
+        ],
+        'indexed': new Date().toISOString(), // The current timestamp
+        'status': 'current',
+        'docStatus': {
+            'coding': [
+                {
+                    'system': 'http://hl7.org/fhir/composition-status',
+                    'code': 'final'
+                }
+            ]
+        },
+        'description': 'FHIR Education Document',
+        'content': [
+            {
+                'attachment': {
+                    'contentType': 'application/pdf',
+                    'url': selectedDocumentUrl // Use the URL of the selected document
+                }
+            }
+        ],
+        'context': {
+            'encounter': {
+                'reference': encounterId
+            },
+            'period': {
+                'end': new Date().toISOString() // The current timestamp
+            }
+        }
+    };
+
+    // The FHIR API endpoint URL (replace with the correct URL)
+    const fhirEndpoint = 'https://fhir-ehr-code.cerner.com/dstu2/9dbb03d5-622d-4631-bd69-c97ef6942d65/DocumentReference';
+
+    // Make the POST request to the FHIR server
+    fetch(fhirEndpoint, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + accessToken
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(documentReference)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(error => {
+                throw new Error('Error posting document: ' + error);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Document posted successfully:', data);
+        alert('Document posted to EMR successfully!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to post document to EMR.');
+    });
+}
+
+
+
+    
   function defaultPatient() {
     return {
       fname: '',
@@ -270,14 +356,7 @@ function searchAllDocuments(token) {
 
 
 
-function sendToEMR() {
-    if (selectedDocumentUrl) {
-        // Add logic to send this document URL to the EMR as a DocumentReference resource
-        console.log('Sending document to EMR:', selectedDocumentUrl);
-    } else {
-        alert('No document selected.');
-    }
-}
+
 
 window.performSearch = function() {
     const query = $('#search-query').val().trim();
