@@ -250,22 +250,23 @@ function searchAllDocuments(token) {
     var searchHtml = '<h2>Search Results</h2><table><tr><th>Document Name</th><th>Action</th></tr>';
     
     items.forEach(function(item) {
-        var docTitle = item.fields.Title;
-        var docUrl = item.webUrl;
+        // Use LinkFilename for display purposes
+        var docTitle = item.fields.LinkFilename; // Change from item.fields.Title to item.fields.LinkFilename
+        var docUrl = item.webUrl; // Retain the original document URL
 
-        searchHtml += '<tr><td>' + docTitle + '</td>';
-        searchHtml += '<td><button onclick="selectDocument(\'' + docUrl + '\')">Select</button></td></tr>';
+        searchHtml += '<tr><td>' + docTitle + '</td>'; // Display LinkFilename
+        searchHtml += '<td><button onclick="selectDocument(\'' + docUrl + '\')">Select</button></td></tr>'; // Keep the action for selecting the document
     });
     
     searchHtml += '</table>';
     $('#search-results').html(searchHtml);
 }
 
-  var selectedDocumentUrl = '';
+var selectedDocumentUrl = '';
 
 function selectDocument(url) {
-    selectedDocumentUrl = url;
-    $('#selected-document').text('Selected Document: ' + url);
+    selectedDocumentUrl = url; // Store the selected document URL
+    $('#selected-document').text('Selected Document: ' + url); // Display the selected document
 }
 
 function sendToEMR() {
