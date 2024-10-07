@@ -20,6 +20,10 @@
           client_secret: '1C48Q~TwZR~Al2a2CK.Ce-dzEL8GDstJ.BJU9bT6',
           scope: 'https://graph.microsoft.com/.default'
         }
+            }).done(function(response) {
+        console.log("Token received successfully", response);
+    }).fail(function(jqXHR, textStatus, errorThrown) {
+        console.error("Failed to get token:", textStatus, errorThrown);
       });
     }
 
