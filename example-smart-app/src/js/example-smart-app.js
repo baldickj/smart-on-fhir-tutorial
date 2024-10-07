@@ -268,8 +268,10 @@ function sendToEMR() {
 
 window.performSearch = function() {
         const query = $('#search-query').val().trim();
-        if (query) {
+                if (query) {
+            console.log('Calling getGraphToken');  // Check if this is logged
             getGraphToken().then(function(tokenResponse) {
+                console.log('Token received:', tokenResponse);  // Check if this is logged
                 const token = tokenResponse.access_token;
                 searchDocuments(token, query)
                     .then(displaySearchResults)
