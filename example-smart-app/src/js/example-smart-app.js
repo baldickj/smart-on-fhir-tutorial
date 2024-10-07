@@ -7,20 +7,21 @@
       ret.reject();
     }
 
+    // Moved getGraphToken here, at the same level as onError
     function getGraphToken() {
-    var tokenUrl = `https://login.microsoftonline.com/8dc983c9-2077-4d2b-85f6-bb244ae6004e/oauth2/v2.0/token`;
+      var tokenUrl = `https://login.microsoftonline.com/8dc983c9-2077-4d2b-85f6-bb244ae6004e/oauth2/v2.0/token`;
 
-    return $.ajax({
+      return $.ajax({
         url: tokenUrl,
         method: 'POST',
         data: {
-            grant_type: 'client_credentials',
-            client_id: 'd1038bf5-f657-438c-a8a9-c368cfc0f392',
-            client_secret: '1C48Q~TwZR~Al2a2CK.Ce-dzEL8GDstJ.BJU9bT6',
-            scope: 'https://graph.microsoft.com/.default'
+          grant_type: 'client_credentials',
+          client_id: 'd1038bf5-f657-438c-a8a9-c368cfc0f392',
+          client_secret: '1C48Q~TwZR~Al2a2CK.Ce-dzEL8GDstJ.BJU9bT6',
+          scope: 'https://graph.microsoft.com/.default'
         }
-    });
-}
+      });
+    }
 
     function onReady(smart) {
       if (smart.hasOwnProperty('patient')) {
