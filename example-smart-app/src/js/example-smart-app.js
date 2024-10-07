@@ -234,7 +234,7 @@ function getGraphToken() {
 function searchAllDocuments(token) {
     var siteId = 'moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684';
     var listId = '893983b1-68e7-40f4-962f-8e56ec5403bd';
-    var searchUrl = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`;
+    var searchUrl = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?expand=fields`;
 
     return $.ajax({
         url: searchUrl,
