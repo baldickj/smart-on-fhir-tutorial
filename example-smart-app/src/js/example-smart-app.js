@@ -281,7 +281,7 @@ function sendToEMR() {
     }
 }
 
-
+window.performSearch = function() {
         const query = $('#search-query').val().trim();
     
     console.log("performSearch called");
