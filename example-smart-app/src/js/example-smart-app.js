@@ -281,14 +281,13 @@ window.performSearch = function() {
     const query = $('#search-query').val().trim();
 
     if (query) {
-        // Use the hard-coded token directly
         const token = hardCodedToken;
 
         searchAllDocuments(token)
             .then(function(data) {
-                // Filter results based on the query
+                // Filter results based on the query in LinkFilename
                 const filteredResults = data.value.filter(item => 
-                    item.fields.Title.includes(query) && item.fields.File_x0020_Type === 'pdf'
+                    item.fields.LinkFilename.includes(query) && item.fields.DocIcon === 'pdf'
                 );
                 displaySearchResults(filteredResults);
             })
