@@ -26,7 +26,88 @@ function getGraphToken() {
       });
     }
 
+function sendToEMR() {
+    // Ensure a document has been selected
+    if (!selectedDocumentUrl) {
+        alert('No document selected.');
+        return;
+    }
 
+    // Define the document reference payload
+    const documentReference = {
+        'resourceType': 'DocumentReference',
+        'subject': {
+            'reference': 'Patient/24182583' // May need to change if this variable is not getting passed
+        },
+        'type': {
+            'coding': [
+{ "coding": [ { "system": "https://fhir.cerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72", "code": "1046116289" } ] }
+            ]
+        },
+        'author': [
+            {
+                'reference': 'Practitioner/9767220' // Replace with actual practitioner reference
+            }
+        ],
+        'indexed': new Date().toISOString(), // The current timestamp
+        'status': 'current',
+        'docStatus': {
+            'coding': [
+                {
+                    'system': 'http://hl7.org/fhir/composition-status',
+                    'code': 'final'
+                }
+            ]
+        },
+        'description': 'FHIR Education Document',
+        'content': [
+            {
+                'attachment': {
+                    'contentType': 'application/pdf',
+                    'url': selectedDocumentUrl // Use the URL of the selected document
+                }
+            }
+        ],
+        'context': {
+            'encounter': {
+                'reference': encounterId
+            },
+            'period': {
+                'end': new Date().toISOString() // The current timestamp
+            }
+        }
+    };
+
+    // The FHIR API endpoint URL (replace with the correct URL)
+    const fhirEndpoint = 'https://fhir-ehr-code.cerner.com/dstu2/9dbb03d5-622d-4631-bd69-c97ef6942d65/DocumentReference';
+
+    // Make the POST request to the FHIR server
+    fetch(fhirEndpoint, {
+        method: 'POST',
+        headers: {
+            'Authorization': 'Bearer ' + accessToken ,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(documentReference)
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(error => {
+                throw new Error('Error posting document: ' + error);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Document posted successfully:', data);
+        alert('Document posted to EMR successfully!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to post document to EMR.');
+    });
+}
 
 
 (function(window) {
@@ -129,88 +210,7 @@ function getGraphToken() {
     return ret.promise();
   };
 
-function sendToEMR() {
-    // Ensure a document has been selected
-    if (!selectedDocumentUrl) {
-        alert('No document selected.');
-        return;
-    }
 
-    // Define the document reference payload
-    const documentReference = {
-        'resourceType': 'DocumentReference',
-        'subject': {
-            'reference': 'Patient/24182583' // May need to change if this variable is not getting passed
-        },
-        'type': {
-            'coding': [
-{ "coding": [ { "system": "https://fhir.cerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72", "code": "1046116289" } ] }
-            ]
-        },
-        'author': [
-            {
-                'reference': 'Practitioner/9767220' // Replace with actual practitioner reference
-            }
-        ],
-        'indexed': new Date().toISOString(), // The current timestamp
-        'status': 'current',
-        'docStatus': {
-            'coding': [
-                {
-                    'system': 'http://hl7.org/fhir/composition-status',
-                    'code': 'final'
-                }
-            ]
-        },
-        'description': 'FHIR Education Document',
-        'content': [
-            {
-                'attachment': {
-                    'contentType': 'application/pdf',
-                    'url': selectedDocumentUrl // Use the URL of the selected document
-                }
-            }
-        ],
-        'context': {
-            'encounter': {
-                'reference': encounterId
-            },
-            'period': {
-                'end': new Date().toISOString() // The current timestamp
-            }
-        }
-    };
-
-    // The FHIR API endpoint URL (replace with the correct URL)
-    const fhirEndpoint = 'https://fhir-ehr-code.cerner.com/dstu2/9dbb03d5-622d-4631-bd69-c97ef6942d65/DocumentReference';
-
-    // Make the POST request to the FHIR server
-    fetch(fhirEndpoint, {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + accessToken ,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(documentReference)
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(error => {
-                throw new Error('Error posting document: ' + error);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Document posted successfully:', data);
-        alert('Document posted to EMR successfully!');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to post document to EMR.');
-    });
-}
 
 
 
