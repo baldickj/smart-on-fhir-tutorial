@@ -268,7 +268,7 @@ function sendToEMR() {
 
 window.performSearch = function() {
         const query = $('#search-query').val().trim();
-            const query = $('#search-query').val().trim();
+    
     console.log("performSearch called");
     if (typeof getGraphToken === 'function') {
         console.log("getGraphToken exists"); // Debugging line
