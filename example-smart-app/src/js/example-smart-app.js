@@ -268,19 +268,26 @@ function sendToEMR() {
 
 window.performSearch = function() {
         const query = $('#search-query').val().trim();
-                if (query) {
-            console.log('Calling getGraphToken');  // Check if this is logged
-            getGraphToken().then(function(tokenResponse) {
-                console.log('Token received:', tokenResponse);  // Check if this is logged
-                const token = tokenResponse.access_token;
-                searchDocuments(token, query)
-                    .then(displaySearchResults)
-                    .catch(function(error) {
-                        console.log('Error searching documents', error);
-                    });
-            }).catch(function(error) {
-                console.log('Error getting token', error);
-            });
+            const query = $('#search-query').val().trim();
+    console.log("performSearch called");
+    if (typeof getGraphToken === 'function') {
+        console.log("getGraphToken exists"); // Debugging line
+    } else {
+        console.log("getGraphToken is undefined"); // Debugging line
+    }
+
+    if (query) {
+        getGraphToken().then(function(tokenResponse) {
+            console.log('Token received:', tokenResponse); // Debugging line
+            const token = tokenResponse.access_token;
+            searchDocuments(token, query)
+                .then(displaySearchResults)
+                .catch(function(error) {
+                    console.log('Error searching documents', error);
+                });
+        }).catch(function(error) {
+            console.log('Error getting token', error);
+        });
         } else {
             alert('Please enter a search term.');
         }
