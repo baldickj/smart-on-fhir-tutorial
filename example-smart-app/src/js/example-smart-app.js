@@ -231,7 +231,7 @@ function getGraphToken() {
   };
 
 
-function searchDocuments(token, query) {
+function searchAllDocuments(token) {
     var siteId = 'moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684';
     var listId = '893983b1-68e7-40f4-962f-8e56ec5403bd';
     var searchUrl = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`;
@@ -241,10 +241,6 @@ function searchDocuments(token, query) {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${token}`
-        },
-        data: {
-            // Search for PDF files whose titles contain the query
-            '$filter': `contains(fields/Title, '${query}') and fields/File_x0020_Type eq 'pdf'`
         }
     });
 }
@@ -282,27 +278,26 @@ function sendToEMR() {
 }
 
 window.performSearch = function() {
-        const query = $('#search-query').val().trim();
-    
-    console.log("performSearch called");
-    if (typeof getGraphToken === 'function') {
-        console.log("getGraphToken exists"); // Debugging line
-    } else {
-        console.log("getGraphToken is undefined"); // Debugging line
-    }
+    const query = $('#search-query').val().trim();
 
     if (query) {
         // Use the hard-coded token directly
         const token = hardCodedToken;
 
-        searchDocuments(token, query)
-            .then(displaySearchResults)
+        searchAllDocuments(token)
+            .then(function(data) {
+                // Filter results based on the query
+                const filteredResults = data.value.filter(item => 
+                    item.fields.Title.includes(query) && item.fields.File_x0020_Type === 'pdf'
+                );
+                displaySearchResults(filteredResults);
+            })
             .catch(function(error) {
                 console.log('Error searching documents', error);
             });
-        } else {
-            alert('Please enter a search term.');
-        }
+    } else {
+        alert('Please enter a search term.');
+    }
     };
 
 
