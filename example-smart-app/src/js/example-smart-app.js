@@ -54,7 +54,9 @@ function sendToEMR() {
             'coding': [
         {
           'system': 'https://fhir-ehr.sandboxcerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72',
-          'code': '1046116289'
+          'code': '1046116289' ,
+          'display': 'TEST FHIR DOC',
+          'userSelected': true
         }
       ]
         },
