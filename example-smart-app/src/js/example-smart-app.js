@@ -103,9 +103,7 @@ function getGraphToken() {
       }
     }
 
-    FHIR.oauth2.ready(onReady, onError);
-    return ret.promise();
-  };
+
 
 
 
@@ -210,7 +208,9 @@ function sendToEMR() {
 
 
 
-
+    FHIR.oauth2.ready(onReady, onError);
+    return ret.promise();
+  };
 
 
 
