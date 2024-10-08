@@ -85,12 +85,14 @@ function sendToEMR() {
             }
         ],
         'context': {
-            'encounter': {
-                'reference': 'Encounter/33073244'
-            },
-            'period': {
-                'end': new Date().toISOString() // The current timestamp
+            'encounter':[ // Change this from an object to an array
+            {
+                'reference': 'Encounter/33073244' // Ensure this is the correct encounter reference
             }
+        ],
+        'period': {
+            'end': new Date().toISOString() // The current timestamp
+        }
         }
     };
 
