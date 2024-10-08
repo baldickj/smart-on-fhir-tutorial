@@ -67,14 +67,7 @@ function sendToEMR() {
         ],
         'indexed': new Date().toISOString(), // The current timestamp
         'status': 'current',
-        'docStatus': {
-            'coding': [
-                {
-                    'system': 'http://hl7.org/fhir/composition-status',
-                    'code': 'final'
-                }
-            ]
-        },
+        'docStatus': 'final',
         'description': 'FHIR Education Document',
         'content': [
             {
