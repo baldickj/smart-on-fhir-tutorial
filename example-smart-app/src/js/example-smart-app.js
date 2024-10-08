@@ -95,7 +95,7 @@ function sendToEMR() {
     };
 
     // The FHIR API endpoint URL (replace with the correct URL)
-    const fhirEndpoint = 'https://fhir-ehr.sandboxcerner.com/dstu2/9dbb03d5-622d-4631-bd69-c97ef6942d65/DocumentReference';
+    const fhirEndpoint = 'https://fhir-ehr.sandboxcerner.com/r4/9dbb03d5-622d-4631-bd69-c97ef6942d65/DocumentReference';
 
     // Make the POST request to the FHIR server
     fetch(fhirEndpoint, {
