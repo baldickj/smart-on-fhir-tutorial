@@ -58,7 +58,8 @@ function sendToEMR() {
           'display': 'TEST FHIR DOC',
           'userSelected': true
         }
-      ]
+      ],
+            'text': 'TEST FHIR DOC'
         },
         'author': [
             {
@@ -73,19 +74,22 @@ function sendToEMR() {
             {
                 'attachment': {
                     'contentType': 'application/pdf',
-                    'url': selectedDocumentUrl // Use the URL of the selected document
+                    'url': selectedDocumentUrl ,// Use the URL of the selected document
+                    'title': 'Test FHIR Doc', // Add appropriate title
+                    'creation': new Date().toISOString() // Add document creation dat
                 }
             }
         ],
         'context': {
-            'encounter':[ // Change this from an object to an array
-            {
-                'reference': 'Encounter/33073244' // Ensure this is the correct encounter reference
+            'encounter':[
+                {
+                    'reference': 'Encounter/33073244' // Ensure this is the correct encounter reference
+                }
+            ],
+            'period': {
+                'start': new Date().toISOString(), // Use the appropriate start date
+                'end': new Date().toISOString() // Use the appropriate end date
             }
-        ],
-        'period': {
-            'end': new Date().toISOString() // The current timestamp
-        }
         }
     };
 
