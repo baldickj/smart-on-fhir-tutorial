@@ -52,7 +52,7 @@ function sendToEMR() {
         },
         'type': {
             'coding': [
-{ "coding": [ { "system": "https://fhir.cerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72", "code": "1046116289" } ] }
+{ "coding": [ { "system": "https://fhir-ehr.sandboxcerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72", "code": "1046116289" } ] }
             ]
         },
         'author': [
@@ -90,7 +90,7 @@ function sendToEMR() {
     };
 
     // The FHIR API endpoint URL (replace with the correct URL)
-    const fhirEndpoint = 'https://fhir-ehr-code.cerner.com/dstu2/9dbb03d5-622d-4631-bd69-c97ef6942d65/DocumentReference';
+    const fhirEndpoint = 'https://fhir-ehr.sandbox.cerner.com/dstu2/9dbb03d5-622d-4631-bd69-c97ef6942d65/DocumentReference';
 
     // Make the POST request to the FHIR server
     fetch(fhirEndpoint, {
