@@ -81,7 +81,7 @@ function sendToEMR() {
         ],
         'context': {
             'encounter': {
-                'reference': 'encounterId'
+                'reference': 'Encounter/33073244'
             },
             'period': {
                 'end': new Date().toISOString() // The current timestamp
