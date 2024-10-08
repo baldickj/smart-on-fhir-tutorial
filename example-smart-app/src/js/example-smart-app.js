@@ -393,6 +393,7 @@ function searchAllDocuments(token) {
         // Use LinkFilename for display purposes
         var docTitle = item.fields.LinkFilename; // Change from item.fields.Title to item.fields.LinkFilename
         var docUrl = item.webUrl; // Retain the original document URL
+        var itemId = item.id;  // Capture the item ID
 
         searchHtml += '<tr><td>' + docTitle + '</td>'; // Display LinkFilename
         searchHtml += '<td><button onclick="selectDocument(\'' + docUrl + '\')">Select</button></td></tr>'; // Keep the action for selecting the document
