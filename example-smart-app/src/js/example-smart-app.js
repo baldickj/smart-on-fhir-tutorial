@@ -44,6 +44,12 @@ function sendToEMR() {
         return;
     }
 
+// Fetch the document and convert it to Base64
+    fetchDocumentAndConvertToBase64(selectedDocumentUrl)
+        .then(base64Data => {
+            // Now define the document reference payload using the Base64-encoded document
+
+    
     // Define the document reference payload
     const documentReference = {
         'resourceType': 'DocumentReference',
@@ -74,7 +80,7 @@ function sendToEMR() {
             {
                 'attachment': {
                     'contentType': 'application/pdf',
-                    'url': selectedDocumentUrl ,// Use the URL of the selected document
+                    'data': base64Data,  // Base64 encoded document data
                     'title': 'Test FHIR Doc', // Add appropriate title
                     'creation': new Date().toISOString() // Add document creation dat
                 }
@@ -123,6 +129,26 @@ function sendToEMR() {
         alert('Failed to post document to EMR.');
     });
 }
+
+
+// Function to fetch and convert the document to Base64
+function fetchDocumentAndConvertToBase64(documentUrl) {
+    return fetch(documentUrl)
+        .then(response => response.arrayBuffer())
+        .then(buffer => {
+            let binary = '';
+            let bytes = new Uint8Array(buffer);
+            for (let i = 0; i < bytes.length; i++) {
+                binary += String.fromCharCode(bytes[i]);
+            }
+            return btoa(binary);  // Base64 encode the binary data
+        })
+        .catch(error => {
+            console.error('Error fetching or converting document:', error);
+            throw error;
+        });
+}
+
 
 
 (function(window) {
