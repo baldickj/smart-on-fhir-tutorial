@@ -37,39 +37,41 @@ function getGraphToken() {
     }
 
 function getDownloadUrl() {
-    if (!selectedItemId) {
-        alert('No document selected.');
-        return;
-    }
-
-    const apiUrl = `https://graph.microsoft.com/v1.0/sites/moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684/lists/893983b1-68e7-40f4-962f-8e56ec5403bd/items/${selectedItemId}/driveItem?select=id,@microsoft.graph.downloadUrl`;
-
-    fetch(apiUrl, {
-        method: 'GET',
-        headers: {
-            'Authorization': `Bearer ${hardCodedToken}`, // Ensure you have your token here
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
+    return new Promise((resolve, reject) => {
+        if (!selectedItemId) {
+            alert('No document selected.');
+            reject('No document selected.'); // Reject the Promise
+            return;
         }
-    })
-    .then(response => {
-        if (!response.ok) {
-            return response.text().then(error => {
-                throw new Error('Error fetching download URL: ' + error);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        downloadUrl = data['@microsoft.graph.downloadUrl'];
-        console.log('Download URL:', downloadUrl);
-        return downloadUrl; // Return the download URL for chaining
-        // Now you can use this download URL to fetch the document
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to retrieve download URL.');
-        return Promise.reject(error); // Ensure the error is propagated
+
+        const apiUrl = `https://graph.microsoft.com/v1.0/sites/moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684/lists/893983b1-68e7-40f4-962f-8e56ec5403bd/items/${selectedItemId}/driveItem?select=id,@microsoft.graph.downloadUrl`;
+
+        fetch(apiUrl, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${hardCodedToken}`, // Ensure you have your token here
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(error => {
+                    throw new Error('Error fetching download URL: ' + error);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            downloadUrl = data['@microsoft.graph.downloadUrl'];
+            console.log('Download URL:', downloadUrl);
+            resolve(downloadUrl); // Resolve with the download URL
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to retrieve download URL.');
+            reject(error); // Reject on error
+        });
     });
 }
 
