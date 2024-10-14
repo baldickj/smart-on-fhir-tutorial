@@ -2,10 +2,12 @@ const hardCodedToken = 'eyJ0eXAiOiJKV1QiLCJub25jZSI6Ikt3YVFqWXgxbFlZblQ1TjZTVUY1
 
 var selectedDocumentUrl = '';
 var accessToken = ''; // Declare accessToken in the global scope
+var itemId = '';
+var selectedItemId = '';
 
-
-function selectDocument(url) {
+function selectDocument(url, itemId) {
     selectedDocumentUrl = url; // Store the selected document URL
+    selectedItemId = itemId;  // Store the selected item ID
     $('#selected-document').text('Selected Document: ' + url); // Display the selected document
 }
 
@@ -28,7 +30,40 @@ function getGraphToken() {
       });
     }
 
+function getDownloadUrl() {
+    if (!selectedItemId) {
+        alert('No document selected.');
+        return;
+    }
 
+    const apiUrl = `https://graph.microsoft.com/v1.0/sites/moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684/lists/893983b1-68e7-40f4-962f-8e56ec5403bd/items/${selectedItemId}/driveItem?select=id,@microsoft.graph.downloadUrl`;
+
+    fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`, // Ensure you have your token here
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(error => {
+                throw new Error('Error fetching download URL: ' + error);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        const downloadUrl = data['@microsoft.graph.downloadUrl'];
+        console.log('Download URL:', downloadUrl);
+        // Now you can use this download URL to fetch the document
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to retrieve download URL.');
+    });
+}
 
 
 
@@ -45,7 +80,7 @@ function sendToEMR() {
     }
 
 // Fetch the document and convert it to Base64
-    fetchDocumentAndConvertToBase64(selectedDocumentUrl)
+    fetchDocumentAndConvertToBase64(downloadUrl)
         .then(base64Data => {
             // Now define the document reference payload using the Base64-encoded document
 
@@ -393,7 +428,7 @@ function searchAllDocuments(token) {
         // Use LinkFilename for display purposes
         var docTitle = item.fields.LinkFilename; // Change from item.fields.Title to item.fields.LinkFilename
         var docUrl = item.webUrl; // Retain the original document URL
-        var itemId = item.id;  // Capture the item ID
+        itemId = item.id;  // Capture the item ID
 
         searchHtml += '<tr><td>' + docTitle + '</td>'; // Display LinkFilename
         searchHtml += '<td><button onclick="selectDocument(\'' + docUrl + '\')">Select</button></td></tr>'; // Keep the action for selecting the document
