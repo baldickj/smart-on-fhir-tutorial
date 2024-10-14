@@ -4,6 +4,7 @@ var selectedDocumentUrl = '';
 var accessToken = ''; // Declare accessToken in the global scope
 var itemId = '';
 var selectedItemId = '';
+var downloadUrl = '';
 
 function selectDocument(url, itemId) {
     selectedDocumentUrl = url; // Store the selected document URL
@@ -60,7 +61,7 @@ function getDownloadUrl() {
         return response.json();
     })
     .then(data => {
-        const downloadUrl = data['@microsoft.graph.downloadUrl'];
+        downloadUrl = data['@microsoft.graph.downloadUrl'];
         console.log('Download URL:', downloadUrl);
         // Now you can use this download URL to fetch the document
     })
