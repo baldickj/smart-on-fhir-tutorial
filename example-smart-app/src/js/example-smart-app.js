@@ -46,7 +46,7 @@ function getDownloadUrl() {
     fetch(apiUrl, {
         method: 'GET',
         headers: {
-            'Authorization': `Bearer ${token}`, // Ensure you have your token here
+            'Authorization': `Bearer ${hardCodedToken}`, // Ensure you have your token here
             'Content-Type': 'application/json',
             'Accept': 'application/json'
         }
