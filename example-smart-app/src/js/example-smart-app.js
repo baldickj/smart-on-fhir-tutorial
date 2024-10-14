@@ -8,6 +8,11 @@ var selectedItemId = '';
 function selectDocument(url, itemId) {
     selectedDocumentUrl = url; // Store the selected document URL
     selectedItemId = itemId;  // Store the selected item ID
+
+    // Log the selectedDocumentUrl and selectedItemId for verification
+    console.log('Document URL:', selectedDocumentUrl);
+    console.log('Selected Item ID:', selectedItemId);
+    
     $('#selected-document').text('Selected Document: ' + url); // Display the selected document
 }
 
