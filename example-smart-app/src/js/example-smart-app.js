@@ -154,7 +154,7 @@ function sendToEMR() {
         headers: {
             'Authorization': 'Bearer ' + accessToken ,
             'Content-Type': 'application/json',
-            'Accept': 'application/json'
+            'Accept': 'application/json+fhir'
         },
         body: JSON.stringify(documentReference)
     })
