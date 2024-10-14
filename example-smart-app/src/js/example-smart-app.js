@@ -63,11 +63,13 @@ function getDownloadUrl() {
     .then(data => {
         downloadUrl = data['@microsoft.graph.downloadUrl'];
         console.log('Download URL:', downloadUrl);
+        return downloadUrl; // Return the download URL for chaining
         // Now you can use this download URL to fetch the document
     })
     .catch(error => {
         console.error('Error:', error);
         alert('Failed to retrieve download URL.');
+        return Promise.reject(error); // Ensure the error is propagated
     });
 }
 
