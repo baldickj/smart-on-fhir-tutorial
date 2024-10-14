@@ -437,7 +437,7 @@ function searchAllDocuments(token) {
         itemId = item.id;  // Capture the item ID
 
         searchHtml += '<tr><td>' + docTitle + '</td>'; // Display LinkFilename
-        searchHtml += '<td><button onclick="selectDocument(\'' + docUrl + '\')">Select</button></td></tr>'; // Keep the action for selecting the document
+        searchHtml += '<td><button onclick="selectDocument(\'' + docUrl + '\', \'' + itemId + '\')">Select</button></td></tr>'; // Pass both docUrl and itemId
     });
     
     searchHtml += '</table>';
