@@ -79,13 +79,14 @@ function sendToEMR() {
         return;
     }
 
-// Fetch the document and convert it to Base64
-    fetchDocumentAndConvertToBase64(downloadUrl)
+// Fetch the download URL first, then send the document to the EMR
+    getDownloadUrl()
+        .then(downloadUrl => {
+            // Fetch the document and convert it to Base64
+            return fetchDocumentAndConvertToBase64(downloadUrl);
+        })
         .then(base64Data => {
             // Now define the document reference payload using the Base64-encoded document
-
-    
-    // Define the document reference payload
     const documentReference = {
         'resourceType': 'DocumentReference',
         'subject': {
