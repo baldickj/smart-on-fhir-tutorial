@@ -404,6 +404,7 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
         if (xhr.status === 200) {
           // Extract the filename from the Content-Disposition header
           var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+            console.log('Content-Disposition:', contentDisposition);
           var filename = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].replace(/"/g, '') : 'document.pdf';
 
           // Create a blob from the response and open it in a new tab
