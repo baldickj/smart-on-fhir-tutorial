@@ -385,7 +385,14 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
   };
 
   window.openDocument = function(docId, contentType) {
+    console.log('docId:', docId);
+    console.log('contentType:', contentType);
+      
     FHIR.oauth2.ready(function(smart) {
+          if (!smart || !smart.tokenResponse || !smart.server) {
+            console.error('smart object or its properties are undefined');
+            return;
+        }
       var accessToken = smart.tokenResponse.access_token;
       var xhr = new XMLHttpRequest();
       xhr.open('GET', smart.server.serviceUrl + '/Binary/' + docId);
