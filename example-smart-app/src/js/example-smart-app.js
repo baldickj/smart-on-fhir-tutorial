@@ -109,11 +109,11 @@ function sendToEMR() {
         {
           'system': 'https://fhir.cerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72',
           'code': '1046116289' ,
-          'display': 'TEST FHIR DOC',
+          'display': docTitle,
           'userSelected': true
         }
       ],
-            'text': 'TEST FHIR DOC'
+            'text': docTitle
         },
         'author': [
             {
@@ -129,7 +129,7 @@ function sendToEMR() {
                 'attachment': {
                     'contentType': 'application/pdf',
                     'data': base64Data,  // Base64 encoded document data
-                    'title': 'Test FHIR Doc', // Add appropriate title
+                    'title': docTitle, // Add appropriate title
                     'creation': new Date().toISOString() // Add document creation dat
                 }
             }
