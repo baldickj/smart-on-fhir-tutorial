@@ -384,12 +384,7 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
     }
   };
 
-    FHIR.oauth2.ready(function(smart) {
-        console.log('Inside FHIR.oauth2.ready'); // Add this to verify it's being called
-          if (!smart || !smart.tokenResponse || !smart.server) {
-            console.error('smart object or its properties are undefined');
-            return;
-        }
+
 
   window.openDocument = function(docId, contentType) {
     console.log('docId:', docId);
@@ -399,7 +394,12 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
         return;
     }
 
-
+    FHIR.oauth2.ready(function(smart) {
+        console.log('Inside FHIR.oauth2.ready'); // Add this to verify it's being called
+          if (!smart || !smart.tokenResponse || !smart.server) {
+            console.error('smart object or its properties are undefined');
+            return;
+        }
 
       
       
