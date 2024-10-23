@@ -6,6 +6,8 @@ var itemId = '';
 var selectedItemId = '';
 var downloadUrl = '';
 var docTitle = '';
+var encounterId = '';
+var patientID = '';
 
 function selectDocument(url, itemId) {
     selectedDocumentUrl = url; // Store the selected document URL
@@ -85,6 +87,8 @@ function getDownloadUrl() {
 
 function sendToEMR() {
     console.log(docTitle); 
+    console.log(encounterId); 
+    console.log(patientID); 
     // Ensure a document has been selected
     if (!selectedDocumentUrl) {
         alert('No document selected.');
@@ -220,8 +224,9 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
       if (smart.hasOwnProperty('patient')) {
         var patient = smart.patient;
         var pt = patient.read();
-        var encounterId = smart.tokenResponse.encounter;
+        encounterId = smart.tokenResponse.encounter;
         accessToken = smart.tokenResponse.access_token; // Set the global accessToken here
+        patientID = smart.tokenResponse.patient;
 
         var obv = smart.patient.api.fetchAll({
           type: 'Observation',
