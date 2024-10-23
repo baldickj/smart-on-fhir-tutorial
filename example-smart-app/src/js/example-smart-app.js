@@ -386,53 +386,55 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
 
 
 
-  window.openDocument = function(docId, contentType) {
-    console.log('docId:', docId);
-    console.log('contentType:', contentType);
-        if (!accessToken) {
-        console.error('Access token is missing');
+window.openDocument = function(docId, contentType) {
+    console.log('Fetching document with ID:', docId);
+    console.log('Requested content type:', contentType);
+
+    // Assuming accessToken is stored globally
+    if (!accessToken) {
+        console.error('Access token is missing.');
         return;
     }
 
-    FHIR.oauth2.ready(function(smart) {
-        console.log('Inside FHIR.oauth2.ready'); // Add this to verify it's being called
-          if (!smart || !smart.tokenResponse || !smart.server) {
-            console.error('smart object or its properties are undefined');
-            return;
-        }
+    // Prepare the request URL (replace the base URL with your FHIR server URL)
+    var fhirServerUrl = 'https://fhir-ehr.sandboxcerner.com/r4/9dbb03d5-622d-4631-bd69-c97ef6942d65';
+    var binaryUrl = fhirServerUrl + '/Binary/' + docId;
 
-      
-      
-      var xhr = new XMLHttpRequest();
-      xhr.open('GET', smart.server.serviceUrl + '/Binary/' + docId);
-      xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
-      xhr.setRequestHeader('Accept', contentType);
-      xhr.responseType = 'arraybuffer';
+    // Create XMLHttpRequest to get the Binary data
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', binaryUrl, true); // Open a GET request to the Binary/{ID} endpoint
+    xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken); // Set the authorization header
+    xhr.setRequestHeader('Accept', contentType); // Set the Accept header based on the content type (e.g., application/pdf)
+    xhr.responseType = 'arraybuffer'; // Response type set to binary data (arraybuffer)
 
-      xhr.onload = function() {
+    // Handle the response when the request is complete
+    xhr.onload = function() {
         if (xhr.status === 200) {
-          // Extract the filename from the Content-Disposition header
-          var contentDisposition = xhr.getResponseHeader('Content-Disposition');
-            console.log('Content-Disposition:', contentDisposition);
-          var filename = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].replace(/"/g, '') : 'document.pdf';
+            console.log('Document retrieved successfully.');
+            
+            // Extract the Content-Disposition header for the filename
+            var contentDisposition = xhr.getResponseHeader('Content-Disposition');
+            var filename = contentDisposition ? contentDisposition.split('filename=')[1].split(';')[0].replace(/"/g, '') : 'document.pdf';
 
-          // Create a blob from the response and open it in a new tab
-          var blob = new Blob([xhr.response], { type: contentType });
-          var blobUrl = URL.createObjectURL(blob);
-          window.open(blobUrl, '_blank');
+            // Create a Blob from the response data
+            var blob = new Blob([xhr.response], { type: contentType });
+            var blobUrl = URL.createObjectURL(blob);
+
+            // Open the document in a new tab
+            window.open(blobUrl, '_blank');
         } else {
-          console.log('Failed to fetch document');
+            console.error('Failed to fetch the document. Status:', xhr.status);
         }
-      };
+    };
 
-      xhr.onerror = function() {
-        console.log('Failed to fetch document');
-      };
+    // Handle any errors during the request
+    xhr.onerror = function() {
+        console.error('Error fetching document from the FHIR server.');
+    };
 
-      xhr.send();
-    });
-  };
-
+    // Send the request
+    xhr.send();
+};
 
 function searchAllDocuments(token) {
     var siteId = 'moffitt.sharepoint.com,7a344d29-3697-4f85-803f-0a1f7266ef59,92cfd7c5-8b6f-4029-adf9-35991e902684';
