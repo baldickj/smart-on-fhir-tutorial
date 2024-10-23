@@ -106,7 +106,7 @@ function sendToEMR() {
     const documentReference = {
         'resourceType': 'DocumentReference',
         'subject': {
-            'reference': 'Patient/'patientID // May need to change if this variable is not getting passed
+            'reference': 'Patient/' + patientID // May need to change if this variable is not getting passed
         },
         'type': {
             'coding': [
@@ -141,7 +141,7 @@ function sendToEMR() {
         'context': {
             'encounter':[
                 {
-                    'reference': 'Encounter/'encounterId // Ensure this is the correct encounter reference
+                    'reference': 'Encounter/' + encounterId // Ensure this is the correct encounter reference
                 }
             ],
             'period': {
