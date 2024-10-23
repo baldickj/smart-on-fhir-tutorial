@@ -384,10 +384,6 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
     }
   };
 
-  window.openDocument = function(docId, contentType) {
-    console.log('docId:', docId);
-    console.log('contentType:', contentType);
-      
     FHIR.oauth2.ready(function(smart) {
         console.log('Inside FHIR.oauth2.ready'); // Add this to verify it's being called
           if (!smart || !smart.tokenResponse || !smart.server) {
@@ -395,7 +391,15 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
             return;
         }
 
-var accessToken = smart.tokenResponse.access_token;
+  window.openDocument = function(docId, contentType) {
+    console.log('docId:', docId);
+    console.log('contentType:', contentType);
+        if (!accessToken) {
+        console.error('Access token is missing');
+        return;
+    }
+
+
 
       
       
