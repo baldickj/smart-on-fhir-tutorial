@@ -395,7 +395,7 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
     }
 
       
-      var accessToken = smart.tokenResponse.access_token;
+      
       var xhr = new XMLHttpRequest();
       xhr.open('GET', smart.server.serviceUrl + '/Binary/' + docId);
       xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken);
