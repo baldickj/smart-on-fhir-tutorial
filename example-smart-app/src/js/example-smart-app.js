@@ -141,7 +141,7 @@ function sendToEMR() {
         'context': {
             'encounter':[
                 {
-                    'reference': 'Encounter/33073244' // Ensure this is the correct encounter reference
+                    'reference': 'Encounter/encounterId' // Ensure this is the correct encounter reference
                 }
             ],
             'period': {
