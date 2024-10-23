@@ -5,6 +5,7 @@ var accessToken = ''; // Declare accessToken in the global scope
 var itemId = '';
 var selectedItemId = '';
 var downloadUrl = '';
+var docTitle = '';
 
 function selectDocument(url, itemId) {
     selectedDocumentUrl = url; // Store the selected document URL
@@ -83,6 +84,7 @@ function getDownloadUrl() {
 
 
 function sendToEMR() {
+    console.log(docTitle); 
     // Ensure a document has been selected
     if (!selectedDocumentUrl) {
         alert('No document selected.');
@@ -456,7 +458,7 @@ function searchAllDocuments(token) {
     
     items.forEach(function(item) {
         // Use LinkFilename for display purposes
-        var docTitle = item.fields.LinkFilename; // Change from item.fields.Title to item.fields.LinkFilename
+        docTitle = item.fields.LinkFilename; // Change from item.fields.Title to item.fields.LinkFilename
         var docUrl = item.webUrl; // Retain the original document URL
         itemId = item.id;  // Capture the item ID
 
