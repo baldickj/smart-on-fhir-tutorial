@@ -388,11 +388,14 @@ function fetchDocumentAndConvertToBase64(documentUrl) {
     console.log('docId:', docId);
     console.log('contentType:', contentType);
       
-    // Use the global accessToken
-    if (!accessToken) {
-        console.error('Access token is missing');
-        return;
-    }
+    FHIR.oauth2.ready(function(smart) {
+        console.log('Inside FHIR.oauth2.ready'); // Add this to verify it's being called
+          if (!smart || !smart.tokenResponse || !smart.server) {
+            console.error('smart object or its properties are undefined');
+            return;
+        }
+
+var accessToken = smart.tokenResponse.access_token;
 
       
       
