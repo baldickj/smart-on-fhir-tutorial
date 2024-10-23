@@ -106,7 +106,7 @@ function sendToEMR() {
     const documentReference = {
         'resourceType': 'DocumentReference',
         'subject': {
-            'reference': 'Patient/24182583' // May need to change if this variable is not getting passed
+            'reference': 'Patient/'patientID // May need to change if this variable is not getting passed
         },
         'type': {
             'coding': [
