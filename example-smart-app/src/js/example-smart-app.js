@@ -58,27 +58,26 @@ function getDownloadUrl() {
             }
         })
         .then(response => {
-        if (!response.ok) {
-            return response.text().then(error => {
-                throw new Error('Error posting document: ' + error);
-            });
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Document posted successfully:', data);
-        alert('Document posted to EMR successfully!');
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        alert('Failed to post document to EMR.');
-    });
-       }) // <-- Missing closing parenthesis added here
+            if (!response.ok) {
+                return response.text().then(error => {
+                    throw new Error('Error fetching download URL: ' + error);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            downloadUrl = data['@microsoft.graph.downloadUrl'];
+            console.log('Download URL:', downloadUrl);
+            resolve(downloadUrl); // Resolve with the download URL
+        })
         .catch(error => {
-            console.error('Error fetching or converting document:', error);
-            throw error;
+            console.error('Error:', error);
+            alert('Failed to retrieve download URL.');
+            reject(error); // Reject on error
         });
+    });
 }
+
 
 
 
@@ -171,14 +170,8 @@ function sendToEMR() {
                 throw new Error('Error posting document: ' + error);
             });
         }
-        return response.text().then(text => {
-        if (text) {
-            return JSON.parse(text);  // Parse the JSON if there is a response body
-        } else {
-            return {};  // Return an empty object if the body is empty
-        }
-    });
-})
+        return response.json();
+    })
     .then(data => {
         console.log('Document posted successfully:', data);
         alert('Document posted to EMR successfully!');
@@ -188,8 +181,12 @@ function sendToEMR() {
         alert('Failed to post document to EMR.');
     });
        }) // <-- Missing closing parenthesis added here
-
+        .catch(error => {
+            console.error('Error fetching or converting document:', error);
+            throw error;
+        });
 }
+
 
 // Function to fetch and convert the document to Base64
 function fetchDocumentAndConvertToBase64(documentUrl) {
@@ -515,6 +512,3 @@ window.performSearch = function() {
 
 
 })(window);
-
-
-
