@@ -164,31 +164,30 @@ function sendToEMR() {
         },
         body: JSON.stringify(documentReference)
     })
-    .then(response => {
-    if (!response.ok) {
-        return response.text().then(error => {
-            throw new Error('Error posting document: ' + error);
+   .then(response => {
+            if (!response.ok) {
+                return response.text().then(error => {
+                    throw new Error('Error posting document: ' + error);
+                });
+            }
+            // Check if the response has a body before parsing it as JSON
+            return response.text().then(text => {
+                if (text) {
+                    return JSON.parse(text);  // Parse the JSON if there is a response body
+                } else {
+                    return {};  // Return an empty object if the body is empty
+                }
+            });
+        })
+        .then(data => {
+            console.log('Document posted successfully:', data);
+            alert('Document posted to EMR successfully!');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Failed to post document to EMR.');
         });
-    }
-    // Check if the response has a body before parsing it as JSON
-    return response.text().then(text => {
-        if (text) {
-            return JSON.parse(text);  // Parse the JSON if there is a response body
-        } else {
-            return {};  // Return an empty object if the body is empty
-        }
-    });
-})
-.then(data => {
-    console.log('Document posted successfully:', data);
-    alert('Document posted to EMR successfully!');
-})
-.catch(error => {
-    console.error('Error:', error);
-    alert('Failed to post document to EMR.');
-});
 }
-
 
 // Function to fetch and convert the document to Base64
 function fetchDocumentAndConvertToBase64(documentUrl) {
