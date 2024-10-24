@@ -170,8 +170,14 @@ function sendToEMR() {
                 throw new Error('Error posting document: ' + error);
             });
         }
-        return response.json();
-    })
+        return response.text().then(text => {
+        if (text) {
+            return JSON.parse(text);  // Parse the JSON if there is a response body
+        } else {
+            return {};  // Return an empty object if the body is empty
+        }
+    });
+})
     .then(data => {
         console.log('Document posted successfully:', data);
         alert('Document posted to EMR successfully!');
