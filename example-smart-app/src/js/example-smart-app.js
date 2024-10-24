@@ -164,21 +164,26 @@ function sendToEMR() {
         },
         body: JSON.stringify(documentReference)
     })
-     .then(response => {
-            if (!response.ok) {
-                return response.text().then(error => {
-                    throw new Error('Error posting document: ' + error);
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Document posted successfully:', data);
-            alert('Document posted to EMR successfully!');
-        })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(error => {
+                throw new Error('Error posting document: ' + error);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Document posted successfully:', data);
+        alert('Document posted to EMR successfully!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to post document to EMR.');
+    });
+       }) // <-- Missing closing parenthesis added here
         .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to post document to EMR.');
+            console.error('Error fetching or converting document:', error);
+            throw error;
         });
 }
 
