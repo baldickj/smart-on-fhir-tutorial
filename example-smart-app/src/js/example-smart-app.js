@@ -164,7 +164,7 @@ function sendToEMR() {
         },
         body: JSON.stringify(documentReference)
     })
-  .then(response => {
+   .then(response => {
             if (!response.ok) {
                 return response.text().then(error => {
                     throw new Error('Error posting document: ' + error);
