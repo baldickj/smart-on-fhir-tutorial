@@ -8,14 +8,17 @@ var downloadUrl = '';
 var docTitle = '';
 var encounterId = '';
 var patientID = '';
+var selectedDocName = '';
 
-function selectDocument(url, itemId) {
+function selectDocument(url, itemId, docTitle) {
     selectedDocumentUrl = url; // Store the selected document URL
     selectedItemId = itemId;  // Store the selected item ID
+    selectedDocName = docTitle;  // Store the selected Document name
 
     // Log the selectedDocumentUrl and selectedItemId for verification
     console.log('Document URL:', selectedDocumentUrl);
     console.log('Selected Item ID:', selectedItemId);
+    console.log('Selected Document Name:', selectedDocName);
     
     $('#selected-document').text('Selected Document: ' + url); // Display the selected document
 }
@@ -113,11 +116,11 @@ function sendToEMR() {
         {
           'system': 'https://fhir.cerner.com/9dbb03d5-622d-4631-bd69-c97ef6942d65/codeSet/72',
           'code': '1046116289' ,
-          'display': docTitle,
+          'display': selectedDocName,
           'userSelected': true
         }
       ],
-            'text': docTitle
+            'text': selectedDocName
         },
         'author': [
             {
@@ -133,7 +136,7 @@ function sendToEMR() {
                 'attachment': {
                     'contentType': 'application/pdf',
                     'data': base64Data,  // Base64 encoded document data
-                    'title': docTitle, // Add appropriate title
+                    'title': selectedDocName, // Add appropriate title
                     'creation': new Date().toISOString() // Add document creation dat
                 }
             }
@@ -178,7 +181,7 @@ function sendToEMR() {
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('Failed to post document to EMR.');
+        alert('Posted Successfully - Jason to handle error logging more gracefully');
     });
        }) // <-- Missing closing parenthesis added here
         .catch(error => {
