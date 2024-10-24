@@ -58,26 +58,27 @@ function getDownloadUrl() {
             }
         })
         .then(response => {
-            if (!response.ok) {
-                return response.text().then(error => {
-                    throw new Error('Error fetching download URL: ' + error);
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            downloadUrl = data['@microsoft.graph.downloadUrl'];
-            console.log('Download URL:', downloadUrl);
-            resolve(downloadUrl); // Resolve with the download URL
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Failed to retrieve download URL.');
-            reject(error); // Reject on error
-        });
+        if (!response.ok) {
+            return response.text().then(error => {
+                throw new Error('Error posting document: ' + error);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        console.log('Document posted successfully:', data);
+        alert('Document posted to EMR successfully!');
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Failed to post document to EMR.');
     });
+       }) // <-- Missing closing parenthesis added here
+        .catch(error => {
+            console.error('Error fetching or converting document:', error);
+            throw error;
+        });
 }
-
 
 
 
