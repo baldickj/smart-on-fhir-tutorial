@@ -180,6 +180,7 @@ function sendToEMR() {
             console.error('Error:', error);
             alert('Failed to post document to EMR.');
         });
+        }            
 }
 
 // Function to fetch and convert the document to Base64
