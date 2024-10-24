@@ -181,10 +181,7 @@ function sendToEMR() {
         alert('Failed to post document to EMR.');
     });
        }) // <-- Missing closing parenthesis added here
-        .catch(error => {
-            console.error('Error fetching or converting document:', error);
-            throw error;
-        });
+
 }
 
 // Function to fetch and convert the document to Base64
